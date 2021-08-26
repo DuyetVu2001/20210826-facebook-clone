@@ -8,7 +8,7 @@ import LeftSideBarItem from './LeftSideBarItem';
 
 export default function LeftSideBar() {
 	return (
-		<div className="fixed left-0 hidden md:w-1/6 lg:block pl-1.5">
+		<div className="fixed left-0 hidden w-1/6 xl:block pl-1.5">
 			<LeftSideBarItem src={Avatar} avatar content="Vũ Ngọc Duyệt" />
 			<LeftSideBarItem src={Friends} content="Friends" />
 			<LeftSideBarItem src={Groups} content="Groups" />
