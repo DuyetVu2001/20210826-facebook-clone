@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Header from '../components/Header';
 import LeftSideBar from '../components/LeftSideBar';
+import MainSection from '../components/MainSection';
 import RightSideBar from '../components/RightSideBar';
 
 const Home: NextPage = () => {
@@ -19,10 +20,11 @@ const Home: NextPage = () => {
 				{/* left side bar */}
 				<LeftSideBar />
 
-				{/* post */}
-
 				{/* right side bar */}
 				<RightSideBar />
+
+				{/* main */}
+				<MainSection />
 			</main>
 
 			<div className="h-96" />

@@ -31,7 +31,7 @@ export default function Header() {
 				<div className="flex items-center ml-2 bg-gray-100 p-2 rounded-full">
 					<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
 					<input
-						className="bg-transparent placeholder-gray-500 placeholder- ml-1 outline-none hidden xl:inline-block cursor-text text-sm"
+						className="bg-transparent placeholder-gray-500 ml-1 outline-none hidden xl:inline-block cursor-text text-sm"
 						type="text"
 						placeholder="Search Facebook"
 					/>
