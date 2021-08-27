@@ -1,7 +1,7 @@
 export default function HeaderMiddleIcon({ Icon, active, number }: any) {
 	return (
 		<div
-			className={`relative flex items-center mx-1 xl:px-10 md:px-6 md:py-2 xl:py-3 hover:bg-gray-200 cursor-pointer rounded-lg ${
+			className={`relative flex items-center mx-1 xl:px-10 md:px-6 md:py-2 xl:py-3 hover:bg-gray-200 dark:hover:bg-dark-third cursor-pointer rounded-lg ${
 				active && 'text-blue-500 border-b-4 border-blue-500'
 			}`}
 		>

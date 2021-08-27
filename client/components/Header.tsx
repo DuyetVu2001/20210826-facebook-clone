@@ -13,10 +13,16 @@ import Avatar from '../public/avatar.jpg';
 import Logo from '../public/fb-logo.png';
 import HeaderMiddleIcon from './HeaderMiddleIcon';
 import HeaderRightIcon from './HeaderRightIcon';
+import { useTheme } from 'next-themes';
 
 export default function Header() {
+	const { theme, setTheme } = useTheme();
+	const toggleTheme = () => {
+		setTheme(theme === 'dark' ? 'light' : 'dark');
+	};
+
 	return (
-		<div className="sticky z-40 top-0 flex justify-between items-center bg-white dark:dark-second shadow px-3 py-1.5 md:py-0 md:pt-0.5">
+		<div className="sticky z-40 top-0 flex justify-between items-center bg-white dark:bg-dark-second dark:dark-second shadow px-3 py-1.5 md:py-0 md:pt-0.5">
 			{/* left */}
 			<div className="flex items-center">
 				<Image
@@ -28,10 +34,10 @@ export default function Header() {
 					alt="Logo"
 				/>
 
-				<div className="flex items-center ml-2 bg-gray-100 p-2 rounded-full">
+				<div className="flex items-center ml-2 bg-gray-100 dark:bg-dark-third p-2.5 rounded-full">
 					<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
 					<input
-						className="bg-transparent placeholder-gray-500 ml-1 outline-none hidden xl:inline-block cursor-text text-sm"
+						className="bg-transparent placeholder-gray-500 ml-1 w-[200px] outline-none hidden xl:inline-block cursor-text text-sm"
 						type="text"
 						placeholder="Search Facebook"
 					/>
@@ -49,7 +55,7 @@ export default function Header() {
 
 			{/* right */}
 			<div className="flex items-center ">
-				<div className="items-center mr-2 hidden xl:inline-flex hover:bg-gray-100 rounded-full cursor-pointer p-1">
+				<div className="items-center mr-2 hidden xl:inline-flex hover:bg-gray-100 dark:hover:bg-dark-third rounded-full cursor-pointer p-1">
 					<Image
 						src={Avatar}
 						className="cursor-pointer rounded-full"
@@ -64,7 +70,9 @@ export default function Header() {
 					<HeaderRightIcon Icon={MenuIcon} />
 					<HeaderRightIcon Icon={ChatIcon} />
 					<HeaderRightIcon Icon={BellIcon} number="7" />
-					<HeaderRightIcon Icon={ChevronDownIcon} />
+					<div onClick={toggleTheme}>
+						<HeaderRightIcon Icon={ChevronDownIcon} />
+					</div>
 				</div>
 			</div>
 		</div>

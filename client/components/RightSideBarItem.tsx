@@ -8,7 +8,7 @@ export default function RightSideBarItem({
 	story,
 }: any) {
 	return (
-		<div className="flex items-center p-1.5 cursor-pointer hover:bg-gray-200 rounded-lg">
+		<div className="flex items-center p-1.5 cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-lg">
 			<div
 				className={`relative mr-3 flex items-center rounded-full ${
 					story && 'border-2 border-blue-400'

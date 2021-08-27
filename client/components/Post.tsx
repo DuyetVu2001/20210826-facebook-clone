@@ -14,7 +14,7 @@ export default function Post(props: any) {
 	}: any = props;
 
 	return (
-		<div className="bg-white rounded-lg mt-4 shadow">
+		<div className="bg-white dark:bg-dark-second dark:text-dark-text rounded-lg mt-4 shadow">
 			{/* header */}
 			<Header
 				avatar={avatar}
@@ -48,7 +48,7 @@ const Header = ({ avatar, groupImg, groupName, username }: any) => (
 				</p>
 			</div>
 		</div>
-		<div className="grid place-items-center w-9 h-9 hover:bg-gray-200 rounded-full cursor-pointer">
+		<div className="grid place-items-center w-9 h-9 hover:bg-gray-200 dark:hover:bg-dark-third rounded-full cursor-pointer">
 			<DotsHorizontalIcon className="h-5 text-gray-500" />
 		</div>
 	</div>
@@ -99,30 +99,30 @@ const ActionBar = () => (
 	<div className="px-3">
 		<div className="flex items-center justify-between py-2">
 			<div className="">
-				<p className="hover:underline text-sm text-gray-600 cursor-pointer">
+				<p className="hover:underline text-sm text-gray-600 dark:text-dark-text cursor-pointer">
 					2.3k
 				</p>
 			</div>
 			<div className="flex items-center">
-				<p className="hover:underline text-sm text-gray-600 cursor-pointer">
+				<p className="hover:underline text-sm text-gray-600 dark:text-dark-text cursor-pointer">
 					3k comments
 				</p>
-				<p className="hover:underline text-sm text-gray-600 cursor-pointer ml-2">
+				<p className="hover:underline text-sm text-gray-600 dark:text-dark-text cursor-pointer ml-2">
 					12 Shares
 				</p>
 			</div>
 		</div>
 
-		<div className="flex items-center border-t-2 border-gray-300 py-1">
-			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 rounded-md py-1 flex items-center">
+		<div className="flex items-center border-t-2 border-gray-300 dark:border-dark-third py-1">
+			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 				<FireIcon className="h-6 text-gray-600" />
 				<p className="">Like</p>
 			</div>
-			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 rounded-md py-1 flex items-center">
+			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 				<ChatAlt2Icon className="h-6 text-gray-600" />
 				<p className="">Comment</p>
 			</div>
-			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 rounded-md py-1 flex items-center">
+			<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 				<ShareIcon className="h-6 text-gray-600" />
 				<p className="">Share</p>
 			</div>
