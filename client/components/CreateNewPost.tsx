@@ -4,7 +4,7 @@ import Avatar from '../public/avatar.jpg';
 
 export default function CreateNewPost() {
 	return (
-		<div className="bg-white px-3 rounded-lg">
+		<div className="bg-white px-3 rounded-lg shadow">
 			<div className="flex items-center border-b-2 border-gray-200 py-2">
 				<Image
 					src={Avatar}

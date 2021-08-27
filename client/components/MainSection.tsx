@@ -1,9 +1,10 @@
 import CreateNewPost from './CreateNewPost';
+import PostList from './PostList';
 import RoomChat from './RoomChat';
 
 export default function MainSection() {
 	return (
-		<div className="p-4 xl:w-1/2 xl:m-auto lg:w-2/3">
+		<div className="2md:px-8 mx-auto 2md:mx-0 2lg:mx-auto 2md:w-5/7 2lg:w-3/5 max-w-[700px]">
 			{/* Story */}
 
 			{/* Create new post */}
@@ -11,7 +12,9 @@ export default function MainSection() {
 
 			{/* Room chat */}
 			<RoomChat />
+
 			{/* Post */}
+			<PostList />
 		</div>
 	);
 }
