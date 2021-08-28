@@ -2,7 +2,7 @@ import Post from './Post';
 import Avatar from '../public/avatar.jpg';
 import GroupImg1 from '../public/group-img-1.jpg';
 
-export default function PostList() {
+export default function Posts() {
 	return (
 		<>
 			<Post
