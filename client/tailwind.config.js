@@ -9,6 +9,7 @@ module.exports = {
 				'dark-second': '#242526',
 				'dark-third': '#3A3B3C',
 				'dark-text': '#E4E6EB',
+				'main-color': '#1876f2',
 			},
 			width: {
 				'1/7': '14.2857143%',
@@ -19,6 +20,7 @@ module.exports = {
 				'6/7': '85.7142857%',
 			},
 			screens: {
+				xs: '562px',
 				'2md': '900px',
 				'2lg': '1100px',
 			},
