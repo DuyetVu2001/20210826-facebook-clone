@@ -1,17 +1,14 @@
 import type { NextPage } from 'next';
-import HeaderPersonal from '../components/HeaderPersonal';
-import Header from '../components/Header';
+import Header from '../screens/personal/Header';
+import Navbar from '../components/Navbar';
 
 const Personal: NextPage = () => {
 	return (
 		<div className="relative bg-gray-100 dark:bg-dark-main">
-			<Header />
+			<Navbar />
 
 			<main className="relative">
-				{/* Header */}
-				<HeaderPersonal />
-
-				{/*  */}
+				<Header />
 			</main>
 		</div>
 	);

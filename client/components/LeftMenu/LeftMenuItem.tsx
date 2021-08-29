@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
-export default function LeftSideBarItem({ src, avatar, image, content }: any) {
+export default function LeftMenuItem({ src, avatar, image, content }: any) {
 	return (
-		<div className="flex items-center p-1.5 cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-lg">
-			<div className="mr-3 flex items-center">
+		<div className="dark:hover:bg-dark-third flex items-center p-1.5 rounded-lg cursor-pointer hover:bg-gray-200 ">
+			<div className="flex items-center mr-3">
 				<Image
 					src={src}
 					className={`${avatar ? 'rounded-full' : image && 'rounded-md'}`}

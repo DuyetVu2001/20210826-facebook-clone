@@ -1,19 +1,5 @@
-import {
-	ArchiveIcon,
-	ColorSwatchIcon,
-	DesktopComputerIcon,
-	HomeIcon,
-	MenuIcon,
-	SearchIcon,
-	UserGroupIcon,
-} from '@heroicons/react/outline';
-import { ChevronDownIcon, BellIcon, ChatIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import Avatar from '../public/avatar.jpg';
-import Logo from '../public/fb-logo.png';
-import HeaderMiddleIcon from './HeaderMiddleIcon';
-import HeaderRightIcon from './HeaderRightIcon';
-import { useTheme } from 'next-themes';
+import Avatar from '../../../public/avatar.jpg';
 
 export default function Story() {
 	return (

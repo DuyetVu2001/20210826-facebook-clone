@@ -11,19 +11,19 @@ import { BellIcon, ChatIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import Avatar from '../public/avatar.jpg';
-import Logo from '../public/fb-logo.png';
-import HeaderMiddleIcon from './HeaderMiddleIcon';
-import HeaderRightIcon from './HeaderRightIcon';
+import Avatar from '../../public/avatar.jpg';
+import Logo from '../../public/fb-logo.png';
+import NavCenterItem from './NavCenterItem';
+import NavRightItem from './NavRightItem';
 
-export default function Header() {
+export default function Navbar() {
 	const { theme, setTheme } = useTheme();
 	const toggleTheme = () => {
 		setTheme(theme === 'dark' ? 'light' : 'dark');
 	};
 
 	return (
-		<div className="sticky z-40 top-0 flex justify-between items-center bg-white dark:bg-dark-second dark:dark-second shadow px-3 py-1.5 md:py-0 md:pt-0.5">
+		<div className="dark:bg-dark-second dark:dark-second sticky z-40 top-0 flex justify-between items-center px-3 py-1.5 md:py-0 md:pt-0.5 bg-white shadow">
 			{/* left */}
 			<div className="flex items-center">
 				<Link href="/">
@@ -39,30 +39,30 @@ export default function Header() {
 					</a>
 				</Link>
 
-				<div className="flex items-center ml-2 bg-gray-100 dark:bg-dark-third p-2.5 rounded-full">
+				<div className="dark:bg-dark-third flex items-center ml-2 p-2.5 rounded-full bg-gray-100">
 					<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
 					<input
-						className="bg-transparent placeholder-gray-500 ml-1 w-[200px] outline-none hidden xl:inline-block cursor-text text-sm"
+						className="xl:inline-block w-[200px] ml-1 outline-none placeholder-gray-500 cursor-text text-sm bg-transparent hidden"
 						type="text"
 						placeholder="Search Facebook"
 					/>
 				</div>
 			</div>
 
-			{/* middle*/}
-			<div className="items-center justify-center hidden md:inline-flex">
-				<HeaderMiddleIcon active Icon={HomeIcon} />
-				<HeaderMiddleIcon Icon={DesktopComputerIcon} number="11" />
-				<HeaderMiddleIcon Icon={ArchiveIcon} />
-				<HeaderMiddleIcon Icon={UserGroupIcon} number="7" />
-				<HeaderMiddleIcon Icon={ColorSwatchIcon} />
+			{/* center */}
+			<div className="md:inline-flex items-center justify-center hidden">
+				<NavCenterItem active Icon={HomeIcon} />
+				<NavCenterItem Icon={DesktopComputerIcon} number="11" />
+				<NavCenterItem Icon={ArchiveIcon} />
+				<NavCenterItem Icon={UserGroupIcon} number="7" />
+				<NavCenterItem Icon={ColorSwatchIcon} />
 			</div>
 
 			{/* right */}
 			<div className="flex items-center ">
 				<Link href="/personal">
 					<a>
-						<div className="items-center mr-2 hidden xl:inline-flex hover:bg-gray-100 dark:hover:bg-dark-third rounded-full cursor-pointer p-1">
+						<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
 							<Image
 								src={Avatar}
 								className="cursor-pointer rounded-full"
@@ -76,11 +76,11 @@ export default function Header() {
 					</a>
 				</Link>
 				<div className="flex items-center">
-					<HeaderRightIcon Icon={MenuIcon} />
-					<HeaderRightIcon Icon={ChatIcon} />
-					<HeaderRightIcon Icon={BellIcon} number="7" />
+					<NavRightItem Icon={MenuIcon} />
+					<NavRightItem Icon={ChatIcon} />
+					<NavRightItem Icon={BellIcon} number="7" />
 					<div onClick={toggleTheme}>
-						<HeaderRightIcon Icon={ChevronDownIcon} />
+						<NavRightItem Icon={ChevronDownIcon} />
 					</div>
 				</div>
 			</div>

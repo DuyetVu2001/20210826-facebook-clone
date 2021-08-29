@@ -1,16 +1,15 @@
 import {
 	DotsHorizontalIcon,
-	MenuIcon,
 	SearchIcon,
 	VideoCameraIcon,
 } from '@heroicons/react/solid';
-import Avatar from '../public/avatar.jpg';
-import Friends from '../public/friends.png';
-import GroupImg1 from '../public/group-img-1.jpg';
-import RightSideBarItem from './RightSideBarItem';
 import Image from 'next/image';
+import Avatar from '../../../public/avatar.jpg';
+import Friends from '../../../public/friends.png';
+import GroupImg1 from '../../../public/group-img-1.jpg';
+import RightMenuItem from './RightMenuItem';
 
-export default function RightSideBar() {
+export default function RightMenu() {
 	return (
 		<div className="fixed dark:text-dark-text right-0 top-20 2md:w-2/7 2lg:w-1/5 bottom-0 hidden 2md:block pl-1.5 pr-1">
 			{/* Friend requests */}
@@ -81,16 +80,16 @@ export default function RightSideBar() {
 					</div>
 				</div>
 
-				<RightSideBarItem src={Avatar} avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
-				<RightSideBarItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
+				<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
 			</div>
 		</div>
 	);

@@ -1,9 +1,10 @@
 import { BellIcon, ChatIcon, VideoCameraIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import Avatar from '../public/avatar.jpg';
+import Avatar from '../../../public/avatar.jpg';
 
-export default function CreateNewPost() {
+export default function NewPost() {
 	return (
+		// Form
 		<div className="bg-white dark:bg-dark-second px-3 rounded-lg shadow mt-6">
 			<div className="flex items-center border-b-2 border-gray-200 dark:border-dark-third py-2">
 				<Image
@@ -20,6 +21,8 @@ export default function CreateNewPost() {
 					placeholder="What's on your mind, Ngọc Duyệt?"
 				/>
 			</div>
+
+			{/* Icons */}
 			<div className="flex items-center py-2">
 				<div className="flex flex-1 justify-center items-center hover:bg-gray-300 dark:hover:bg-dark-third rounded-lg py-2 cursor-pointer">
 					<VideoCameraIcon className="h-7 mr-1 text-red-500" />

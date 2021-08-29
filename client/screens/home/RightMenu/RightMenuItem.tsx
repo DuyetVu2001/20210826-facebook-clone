@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function RightSideBarItem({
+export default function RightMenuItem({
 	src,
 	avatar,
 	image,

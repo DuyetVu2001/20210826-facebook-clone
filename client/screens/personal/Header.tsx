@@ -1,23 +1,8 @@
-import {
-	ArchiveIcon,
-	ColorSwatchIcon,
-	DesktopComputerIcon,
-	HomeIcon,
-	MenuIcon,
-	SearchIcon,
-	UserGroupIcon,
-} from '@heroicons/react/outline';
-import { BellIcon, ChatIcon, ChevronDownIcon } from '@heroicons/react/solid';
-import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import Link from 'next/link';
-import Avatar from '../public/avatar.jpg';
-import Poster from '../public/poster.jpg';
-import ThaoAvatar from '../public/thao-avatar.jpg';
-import HeaderMiddleIcon from './HeaderMiddleIcon';
-import HeaderRightIcon from './HeaderRightIcon';
+import Poster from '../../public/poster.jpg';
+import ThaoAvatar from '../../public/thao-avatar.jpg';
 
-export default function HeaderPersonal() {
+export default function Header() {
 	return (
 		<div className="relative bg-white">
 			<div className="max-w-[940px] mx-auto">
