@@ -1,4 +1,4 @@
-import Posts from '../../../components/Posts';
+import Posts from '../../Posts';
 import ChatRoomCreate from './ChatRoomCreate';
 import NewPost from './NewPost';
 import Story from './Story';
