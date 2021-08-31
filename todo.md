@@ -16,3 +16,6 @@ graph TD;
     components --> LeftMenu
     components --> Posts
 ```
+
+> 1.  Api stories, posts
+> 1.  Fix aspect ratio post image
