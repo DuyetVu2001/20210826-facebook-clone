@@ -12,6 +12,7 @@ import { COOKIE_NAME, __prod__ } from './constants';
 import { Post } from './entities/Post';
 import { User } from './entities/User';
 import { HelloResolver } from './resolvers/hello';
+import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
 import { Context } from './types/Context';
 
@@ -39,7 +40,7 @@ const main = async () => {
 			name: COOKIE_NAME,
 			store: MongoStore.create({ mongoUrl: `${process.env.URI_MONGOOSE}` }),
 			cookie: {
-				maxAge: 1000 * 60 * 60, // one hour
+				maxAge: 1000 * 60 * 30, // one hour
 				httpOnly: true, // JS front end cannot access the cookie
 				secure: __prod__, // cookie only works in https
 				sameSite: 'lax', // protection against CSRF
@@ -52,7 +53,7 @@ const main = async () => {
 
 	const apolloServer = new ApolloServer({
 		schema: await buildSchema({
-			resolvers: [HelloResolver, UserResolver],
+			resolvers: [HelloResolver, UserResolver, PostResolver],
 			validate: false,
 		}),
 		plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],

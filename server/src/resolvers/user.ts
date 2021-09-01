@@ -1,8 +1,9 @@
 import { User } from '../entities/User';
-import { Arg, Ctx, Mutation, Resolver } from 'type-graphql';
+import { Arg, Ctx, ID, Mutation, Resolver } from 'type-graphql';
 import { UserMutationResponse } from '../types/UserMutationResponse';
 import { RegisterInput } from '../types/RegisterInput';
 import { Context } from '../types/Context';
+import { COOKIE_NAME } from '../constants';
 
 @Resolver()
 export class UserResolver {
@@ -32,7 +33,7 @@ export class UserResolver {
 				code: 201,
 				success: true,
 				message: 'User created successfully!',
-				user: await User.save(newUser),
+				user: await newUser.save(),
 			};
 		} catch (error) {
 			console.error(error);
@@ -85,8 +86,25 @@ export class UserResolver {
 		}
 	}
 
+	@Mutation((_return) => Boolean)
+	logout(@Ctx() { req, res }: Context): Promise<boolean> {
+		return new Promise((resolve, _reject) => {
+			res.clearCookie(COOKIE_NAME);
+
+			req.session.destroy((error) => {
+				if (error) {
+					console.log('SESSION ERROR', error);
+					resolve(false);
+				}
+				resolve(true);
+			});
+		});
+	}
+
 	@Mutation((_return) => UserMutationResponse)
-	async deleteUser(@Arg('id') id: number): Promise<UserMutationResponse> {
+	async deleteUser(
+		@Arg('id', (_type) => ID) id: number
+	): Promise<UserMutationResponse> {
 		try {
 			const existingUser = await User.findOne({ id });
 
