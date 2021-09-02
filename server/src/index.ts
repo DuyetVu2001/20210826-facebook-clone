@@ -15,6 +15,7 @@ import { HelloResolver } from './resolvers/hello';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
 import { Context } from './types/Context';
+import cors from 'cors';
 
 const main = async () => {
 	await createConnection({
@@ -28,6 +29,13 @@ const main = async () => {
 	});
 
 	const app = express();
+
+	app.use(
+		cors({
+			origin: 'http://localhost:3000',
+			credentials: true,
+		})
+	);
 
 	// Session/Cookies store
 	await mongoose.connect(`${process.env.URI_MONGOOSE}`, {
