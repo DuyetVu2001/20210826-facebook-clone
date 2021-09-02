@@ -1,9 +1,10 @@
-import { User } from '../entities/User';
 import { Arg, Ctx, ID, Mutation, Resolver } from 'type-graphql';
-import { UserMutationResponse } from '../types/UserMutationResponse';
-import { RegisterInput } from '../types/RegisterInput';
-import { Context } from '../types/Context';
 import { COOKIE_NAME } from '../constants';
+import { User } from '../entities/User';
+import { Context } from '../types/Context';
+import { LoginInput } from '../types/LoginInput';
+import { RegisterInput } from '../types/RegisterInput';
+import { UserMutationResponse } from '../types/UserMutationResponse';
 
 @Resolver()
 export class UserResolver {
@@ -47,7 +48,7 @@ export class UserResolver {
 
 	@Mutation((_return) => UserMutationResponse)
 	async login(
-		@Arg('registerInput') { username, password }: RegisterInput,
+		@Arg('loginInput') { username, password }: LoginInput,
 		@Ctx() { req }: Context
 	): Promise<UserMutationResponse> {
 		try {
@@ -61,7 +62,7 @@ export class UserResolver {
 					message: 'Incorrect username or password!',
 					errors: [
 						{
-							field: 'registerInput',
+							field: 'loginInput',
 							message: 'Incorrect username or password!',
 						},
 					],
