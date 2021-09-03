@@ -1,4 +1,4 @@
-import { Arg, Ctx, ID, Mutation, Resolver } from 'type-graphql';
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { COOKIE_NAME } from '../constants';
 import { User } from '../entities/User';
 import { Context } from '../types/Context';
@@ -8,6 +8,30 @@ import { UserMutationResponse } from '../types/UserMutationResponse';
 
 @Resolver()
 export class UserResolver {
+	@Query((_return) => User, { nullable: true })
+	async getCurrentUser(@Ctx() { req }: Context): Promise<User | null> {
+		try {
+			if (!req.session.userId) return null;
+			const existingUser = await User.findOne(req.session.userId);
+			if (!existingUser) return null;
+
+			return existingUser;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	}
+
+	@Query((_return) => [User], { nullable: true })
+	async listUsers(): Promise<User[] | null> {
+		try {
+			return await User.find();
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	}
+
 	@Mutation((_return) => UserMutationResponse)
 	async register(
 		@Arg('registerInput') { username, password }: RegisterInput
@@ -107,7 +131,7 @@ export class UserResolver {
 		@Arg('id', (_type) => ID) id: number
 	): Promise<UserMutationResponse> {
 		try {
-			const existingUser = await User.findOne({ id });
+			const existingUser = await User.findOne(id);
 
 			if (!existingUser)
 				return {

@@ -124,7 +124,7 @@ export class PostResolver {
 		@Arg('id', (_type) => ID) id: number
 	): Promise<PostMutationResponse> {
 		try {
-			const existingPost = await Post.findOne({ id });
+			const existingPost = await Post.findOne(id);
 
 			if (!existingPost)
 				return {
