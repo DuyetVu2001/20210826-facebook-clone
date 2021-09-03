@@ -17,7 +17,7 @@ export class UserResolver {
 
 			if (existingUser)
 				return {
-					code: 400,
+					code: 401,
 					success: false,
 					message: 'Username already exists!',
 					errors: [
@@ -57,7 +57,7 @@ export class UserResolver {
 
 			if (!existingUser || !isCorrectPassword)
 				return {
-					code: 400,
+					code: 401,
 					success: false,
 					message: 'Incorrect username or password!',
 					errors: [
@@ -111,7 +111,7 @@ export class UserResolver {
 
 			if (!existingUser)
 				return {
-					code: 400,
+					code: 401,
 					success: false,
 					message: 'User does not exist!',
 					errors: [

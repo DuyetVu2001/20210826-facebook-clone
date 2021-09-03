@@ -92,7 +92,7 @@ export class PostResolver {
 			let oldPost = await Post.findOne(id);
 			if (!oldPost)
 				return {
-					code: 400,
+					code: 401,
 					success: false,
 					message: 'Post not found!',
 				};
@@ -128,7 +128,7 @@ export class PostResolver {
 
 			if (!existingPost)
 				return {
-					code: 400,
+					code: 401,
 					success: false,
 					message: 'Post does not exist!',
 					errors: [
