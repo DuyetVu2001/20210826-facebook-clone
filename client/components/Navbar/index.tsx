@@ -11,16 +11,32 @@ import { BellIcon, ChatIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import {
+	useGetCurrentUserQuery,
+	useLogoutMutation,
+} from '../../generated/graphql';
 import Avatar from '../../public/avatar.jpg';
 import Logo from '../../public/fb-logo.png';
 import NavCenterItem from './NavCenterItem';
 import NavRightItem from './NavRightItem';
 
 export default function Navbar() {
+	const router = useRouter();
+	const [logoutMutation] = useLogoutMutation();
+	const { data } = useGetCurrentUserQuery();
+
+	const logout = async () => {
+		const res = await logoutMutation();
+		router.push('/login');
+	};
+
+	// Theme
 	const { theme, setTheme } = useTheme();
 	const toggleTheme = () => {
 		setTheme(theme === 'dark' ? 'light' : 'dark');
 	};
+	// Theme
 
 	return (
 		<div className="dark:bg-dark-second dark:dark-second sticky z-40 top-0 flex justify-between items-center px-3 py-1.5 md:py-0 md:pt-0.5 bg-white shadow">
@@ -71,14 +87,18 @@ export default function Navbar() {
 								layout="fixed"
 								alt="Logo"
 							/>
-							<p className="font-semibold text-sm px-1.5">Ngọc Duyệt</p>
+							<p className="font-semibold text-sm px-1.5">
+								{data?.getCurrentUser?.username}
+							</p>
 						</div>
 					</a>
 				</Link>
 				<div className="flex items-center">
 					<NavRightItem Icon={MenuIcon} />
 					<NavRightItem Icon={ChatIcon} />
-					<NavRightItem Icon={BellIcon} number="7" />
+					<div onClick={logout}>
+						<NavRightItem Icon={BellIcon} number="7" />
+					</div>
 					<div onClick={toggleTheme}>
 						<NavRightItem Icon={ChevronDownIcon} />
 					</div>

@@ -1,0 +1,15 @@
+query ListUsers {
+	listUsers {
+		id
+		username
+		avatar
+	}
+}
+
+query GetCurrentUser {
+	getCurrentUser {
+		id
+		username
+		avatar
+	}
+}
