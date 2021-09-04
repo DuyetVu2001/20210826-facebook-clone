@@ -13,6 +13,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
+	GetCurrentUserDocument,
+	GetCurrentUserQuery,
 	useGetCurrentUserQuery,
 	useLogoutMutation,
 } from '../../generated/graphql';
@@ -24,10 +26,20 @@ import NavRightItem from './NavRightItem';
 export default function Navbar() {
 	const router = useRouter();
 	const [logoutMutation] = useLogoutMutation();
-	const { data } = useGetCurrentUserQuery();
+	const { data: currentUserData } = useGetCurrentUserQuery();
 
 	const logout = async () => {
-		const res = await logoutMutation();
+		await logoutMutation({
+			update(cache) {
+				cache.writeQuery<GetCurrentUserQuery>({
+					query: GetCurrentUserDocument,
+					data: {
+						getCurrentUser: null,
+					},
+				});
+			},
+		});
+
 		router.push('/login');
 	};
 
@@ -88,7 +100,7 @@ export default function Navbar() {
 								alt="Logo"
 							/>
 							<p className="font-semibold text-sm px-1.5">
-								{data?.getCurrentUser?.username}
+								{currentUserData?.getCurrentUser?.username}
 							</p>
 						</div>
 					</a>

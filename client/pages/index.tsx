@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LeftMenu from '../components/LeftMenu';
-import Navbar from '../components/Navbar';
 import MainContent from '../components/homePage/MainContent';
 import RightMenu from '../components/homePage/RightMenu';
+import LeftMenu from '../components/LeftMenu';
+import Navbar from '../components/Navbar';
 
 const Home: NextPage = () => {
 	return (

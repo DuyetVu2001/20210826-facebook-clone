@@ -1,25 +1,36 @@
 import type { NextPage } from 'next';
 import { useTheme } from 'next-themes';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { useListUsersQuery, useLoginMutation } from '../generated/graphql';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useRef, useState } from 'react';
+import {
+	loginFailure,
+	loginStart,
+	loginSuccess,
+} from '../context/authContext/AuthActions';
+import { AuthContext } from '../context/authContext/AuthContext';
+import {
+	GetCurrentUserDocument,
+	GetCurrentUserQuery,
+	useListUsersQuery,
+	useLoginMutation,
+} from '../generated/graphql';
 import Avatar from '../public/avatar.jpg';
 import Logo from '../public/fb-logo.png';
 
 const Login: NextPage = () => {
+	const router = useRouter();
 	const inputEle: any = useRef(null);
 	const [listUsers, setListUsers]: any = useState([]);
-
-	const router = useRouter();
-	const [loginMutation, { data }] = useLoginMutation();
-	const { data: listUserData } = useListUsersQuery();
-
 	const [idLoginForm, setIdLoginForm] = useState(null);
-	const [loginData, setLoginData] = useState({
+	const [formLoginData, setFormLoginData] = useState({
 		username: '',
 		password: '',
 	});
+
+	const { dispatch } = useContext(AuthContext);
+	const { data: listUserData } = useListUsersQuery();
+	const [loginMutation, { data: loginData }] = useLoginMutation();
 
 	// Fetch list users
 	useEffect(() => {
@@ -35,16 +46,35 @@ const Login: NextPage = () => {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
+		dispatch(loginStart());
 
-		const res = await loginMutation({
-			variables: {
-				loginInput: loginData,
-			},
-		});
+		try {
+			const res = await loginMutation({
+				variables: {
+					loginInput: formLoginData,
+				},
+				update(cache, { data }) {
+					cache.writeQuery<GetCurrentUserQuery>({
+						query: GetCurrentUserDocument,
+						data: {
+							getCurrentUser: data?.login.user,
+						},
+					});
+				},
+			});
 
-		res.data?.login.success && router.push('/');
+			if (res.data?.login.success) {
+				dispatch(loginSuccess(res.data.login.user));
+				router.push('/');
+			} else {
+				dispatch(loginFailure());
+			}
+		} catch (error) {
+			console.error(error);
+			dispatch(loginFailure());
+		}
 
-		setLoginData({ ...loginData, password: '' });
+		setFormLoginData({ ...formLoginData, password: '' });
 	};
 
 	// Theme
@@ -67,13 +97,7 @@ const Login: NextPage = () => {
 			{/* List user */}
 			<div className="flex flex-wrap items-center justify-center w-2/5 cursor-pointer">
 				{listUsers.map(({ id, username }: any) => (
-					<div
-						className="m-4 flex flex-col items-center"
-						key={id}
-						onClick={() => {
-							setIdLoginForm(id);
-						}}
-					>
+					<div className="m-4 flex flex-col items-center" key={id}>
 						<Image
 							src={Avatar}
 							className="rounded-md"
@@ -81,24 +105,31 @@ const Login: NextPage = () => {
 							height="130"
 							layout="fixed"
 							alt="content"
+							onClick={() => {
+								setFormLoginData({ ...formLoginData, password: '' });
+								setIdLoginForm(idLoginForm === id ? null : id);
+							}}
 						/>
 
 						<p className="dark:text-dark-text text-dark-third font-semibold text-center">
 							{username}
 						</p>
 						{idLoginForm === id && (
-							<form onSubmit={handleSubmit}>
+							<form
+								onSubmit={handleSubmit}
+								className="dark:bg-dark-third flex flex-col h-6 p-1 rounded-md bg-gray-300"
+							>
 								<input
 									type="password"
-									value={loginData.password}
+									value={formLoginData.password}
 									onChange={(e) =>
-										setLoginData({ username, password: e.target.value })
+										setFormLoginData({ username, password: e.target.value })
 									}
 									ref={inputEle}
-									className="w-32 rounded-md bg-gray-300"
+									className="w-28 h-full outline-none bg-transparent"
 								/>
 								<p className="text-red-500 text-xs font-semibold mt-0.5">
-									{data?.login.errors && 'Incorrect password!'}
+									{loginData?.login.errors && 'Incorrect password!'}
 								</p>
 							</form>
 						)}
