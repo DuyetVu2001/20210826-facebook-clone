@@ -92,7 +92,7 @@ export default function Navbar() {
 					<a>
 						<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
 							<Image
-								src={Avatar}
+								src={currentUserData?.getCurrentUser?.avatar || Avatar}
 								className="cursor-pointer rounded-full"
 								width="26"
 								height="26"

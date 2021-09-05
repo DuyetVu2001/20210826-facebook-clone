@@ -1,6 +1,7 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { ChatAlt2Icon, ShareIcon, FireIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
+import Avatar from '../../public/avatar.jpg';
 
 export default function Post(props: any) {
 	const {
@@ -20,22 +21,20 @@ export default function Post(props: any) {
 				<div className="flex items-center">
 					<div className="relative w-9 h-9 cursor-pointer">
 						<Image
-							src={groupImg ? groupImg : avatar}
-							className={`${groupImg ? 'rounded-lg' : 'rounded-full'}`}
-							width="36"
-							height="36"
-							layout="fixed"
+							src={groupImg ? groupImg : avatar || Avatar}
+							className={`object-cover ${
+								groupImg ? 'rounded-lg' : 'rounded-full'
+							}`}
+							layout="fill"
 							alt="content"
 						/>
 
 						{groupImg && (
-							<div className="absolute -bottom-2 -right-2">
+							<div className="absolute -bottom-2 -right-2 w-6 h-6">
 								<Image
-									src={avatar}
-									className={`rounded-full `}
-									width="24"
-									height="24"
-									layout="fixed"
+									src={avatar || Avatar}
+									className={`object-cover rounded-full`}
+									layout="fill"
 									alt="content"
 								/>
 							</div>
@@ -43,10 +42,10 @@ export default function Post(props: any) {
 					</div>
 
 					<div className="ml-4 font-semibold">
-						<p className="text-gray-800 text-sm cursor-pointer hover:underline">
+						<p className="dark:text-dark-text text-gray-800 text-sm cursor-pointer hover:underline">
 							{groupName ? groupName : username}
 						</p>
-						<p className="text-gray-500 text-xs cursor-pointer hover:underline">
+						<p className="dark:text-gray-400 text-gray-500 text-xs cursor-pointer hover:underline">
 							{groupName ? groupName : '2021'}
 						</p>
 					</div>
@@ -64,8 +63,13 @@ export default function Post(props: any) {
 				<p className="text-sm">{content}</p>
 			</div>
 
-			<div className="w-full mt-3">
-				<Image src={postImg} className={``} layout="responsive" alt="content" />
+			<div className="relative w-full pb-[56.25%] mt-3">
+				<Image
+					src={postImg || Avatar}
+					className="object-cover"
+					layout="fill"
+					alt="content"
+				/>
 			</div>
 
 			{/* Action bar */}

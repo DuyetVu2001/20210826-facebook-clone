@@ -4,6 +4,8 @@ import MainContent from '../components/homePage/MainContent';
 import RightMenu from '../components/homePage/RightMenu';
 import LeftMenu from '../components/LeftMenu';
 import Navbar from '../components/Navbar';
+import { ListPostsDocument } from '../generated/graphql';
+import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Home: NextPage = () => {
 	return (
@@ -22,6 +24,14 @@ const Home: NextPage = () => {
 			</main>
 		</div>
 	);
+};
+
+export const getStaticProps = async () => {
+	const apolloClient = initializeApollo();
+
+	await apolloClient.query({ query: ListPostsDocument });
+
+	return addApolloState(apolloClient, { props: {} });
 };
 
 export default Home;

@@ -13,3 +13,21 @@ query GetCurrentUser {
 		avatar
 	}
 }
+
+query ListPosts {
+	listPosts {
+		id
+		title
+		content
+		keyword
+		image
+		userId
+		user {
+			id
+			username
+			avatar
+		}
+		createdAt
+		updatedAt
+	}
+}

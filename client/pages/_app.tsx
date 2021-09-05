@@ -1,18 +1,15 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'next-themes';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import type { AppProps } from 'next/app';
 import AuthContextProvider from '../context/authContext/AuthContext';
-
-const client = new ApolloClient({
-	uri: 'http://localhost:4000/graphql',
-	cache: new InMemoryCache(),
-	credentials: 'include',
-});
+import { useApollo } from '../lib/apolloClient';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
+	const apolloClient = useApollo(pageProps);
+
 	return (
-		<ApolloProvider client={client}>
+		<ApolloProvider client={apolloClient}>
 			<ThemeProvider defaultTheme="system" attribute="class">
 				<AuthContextProvider>
 					<Component {...pageProps} />
