@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import MainContent from '../components/homePage/MainContent';
+import ChatRoomCreate from '../components/homePage/MainContent/ChatRoomCreate';
+import NewPost from '../components/homePage/MainContent/NewPost';
+import Story from '../components/homePage/MainContent/Story';
 import RightMenu from '../components/homePage/RightMenu';
 import LeftMenu from '../components/LeftMenu';
 import Navbar from '../components/Navbar';
+import Posts from '../components/Posts';
 import { ListPostsDocument } from '../generated/graphql';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
@@ -20,7 +23,23 @@ const Home: NextPage = () => {
 			<main className="pt-5 relative">
 				<RightMenu />
 				<LeftMenu />
-				<MainContent />
+
+				{/* main content */}
+				<div className="2md:px-8 mx-auto 2md:mx-0 2lg:mx-auto 2md:w-5/7 2lg:w-3/5 max-w-[700px]">
+					{/* Story lise */}
+					<div className="flex space-x-2">
+						<Story />
+						<Story />
+						<Story />
+						<Story />
+						<Story />
+						<Story />
+					</div>
+
+					<NewPost />
+					<ChatRoomCreate />
+					<Posts />
+				</div>
 			</main>
 		</div>
 	);
