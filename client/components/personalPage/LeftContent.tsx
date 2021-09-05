@@ -6,15 +6,15 @@ export default function LeftContent() {
 	let arrs = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 	return (
-		<div className="flex-[7] mr-4">
+		<div className="2md:mr-4 2md:flex-[7] mt-4">
 			{/* INTRO */}
-			<div className="p-3 rounded-lg bg-white shadow">
+			<div className="dark:bg-dark-second dark:text-dark-text p-3 rounded-lg bg-white shadow">
 				<p className="font-bold text-xl">Intro</p>
-				<div className="flex items-center mt-1 text-gray-500">
+				<div className="dark:text-dark-text flex items-center mt-1 text-gray-500">
 					<DotsHorizontalIcon className="h-5" />
 					<p className="leading-9 ml-1 text-sm">
 						Lives in{' '}
-						<span className="font-medium text-gray-800 cursor-pointer hover:underline">
+						<span className="dark:text-dark-text font-medium text-gray-800 cursor-pointer hover:underline">
 							Thái Bình
 						</span>
 					</p>
@@ -22,12 +22,12 @@ export default function LeftContent() {
 			</div>
 
 			{/* PHOTOS */}
-			<div className=" mt-4 p-3 rounded-lg bg-white shadow">
+			<div className="dark:bg-dark-second dark:text-dark-text mt-4 p-3 rounded-lg bg-white shadow">
 				<div className="flex items-center justify-between">
 					<p className="font-bold text-xl cursor-pointer hover:underline">
 						Photos
 					</p>
-					<p className="text-main-color px-2 py-1 rounded-[3px] cursor-pointer hover:bg-gray-200">
+					<p className="dark:hover:bg-dark-third dark:text-blue-400 text-main-color px-2 py-1 rounded-[3px] cursor-pointer hover:bg-gray-200">
 						See All Photos
 					</p>
 				</div>
@@ -47,20 +47,20 @@ export default function LeftContent() {
 				</div>
 			</div>
 
-			{/* FRIEND */}
-			<div className=" mt-4 p-3 rounded-lg bg-white shadow">
+			{/* FRIENDS */}
+			<div className="dark:bg-dark-second dark:text-dark-text mt-4 p-3 rounded-lg bg-white shadow">
 				<div className="flex items-center justify-between">
 					<p className="font-bold text-xl cursor-pointer hover:underline">
 						Friends
 					</p>
-					<p className="text-main-color px-2 py-1 rounded-[3px] cursor-pointer hover:bg-gray-200">
+					<p className="dark:hover:bg-dark-third dark:text-blue-400 text-main-color px-2 py-1 rounded-[3px] cursor-pointer hover:bg-gray-200">
 						See All Friends
 					</p>
 				</div>
-				<p className="text-gray-600">22 mutual friends</p>
+				<p className="dark:text-gray-400 text-gray-600">22 mutual friends</p>
 
 				{/* LIST FRIENDS */}
-				<div className="grid grid-cols-3 gap-x-3 gap-y-5 mt-4 mb-6">
+				<div className="grid grid-cols-3 gap-x-3 gap-y-7 mt-4 mb-6">
 					{arrs.map((_, index) => (
 						<div key={index}>
 							<div className="relative pb-[100%]">
@@ -71,7 +71,7 @@ export default function LeftContent() {
 									alt="Avatar"
 								/>
 							</div>
-							<p className="mt-0.5 text-sm font-medium text-gray-700 cursor-pointer hover:underline">
+							<p className="dark:text-dark-text mt-0.5 text-xs font-medium text-gray-700 cursor-pointer hover:underline">
 								Ethan
 							</p>
 						</div>

@@ -9,24 +9,20 @@ import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Personal: NextPage = () => {
 	return (
-		<div className="relative bg-gray-100 dark:bg-dark-main">
+		<div className="dark:bg-dark-main relative bg-gray-100">
 			<Head>
 				<title>Personal</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Navbar />
-
-			{/* HEADER */}
 			<Header />
-
 			{/* MAIN CONTENT */}
-			<main className="relative flex max-w-[880px] mx-auto mt-4">
-				{/* LEFT */}
-				<LeftContent />
-
-				{/* RIGHT */}
-				<RightContent />
-			</main>
+			<div className="mx-4">
+				<main className="2md:flex 2md:max-w-[880px] mx-auto relative max-w-[500px]">
+					<LeftContent />
+					<RightContent />
+				</main>
+			</div>
 		</div>
 	);
 };

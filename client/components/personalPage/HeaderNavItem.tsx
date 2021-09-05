@@ -18,8 +18,9 @@ export default function HeaderNavItem({
 			}`}
 		>
 			<div
-				className={`flex items-center px-4 rounded-md hover:bg-gray-100 text-gray-500 ${
-					active && 'hover:bg-transparent text-main-color'
+				className={`dark:hover:bg-dark-third dark:text-dark-text flex items-center px-4 rounded-md hover:bg-gray-100 text-gray-500 ${
+					active &&
+					'dark:text-main-color dark:hover:bg-transparent hover:bg-transparent text-main-color'
 				}`}
 			>
 				<p className={`leading-[52px] font-medium text-sm`}>{content}</p>

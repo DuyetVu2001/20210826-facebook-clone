@@ -3,11 +3,11 @@ import Posts from '../Posts';
 
 export default function RightContent() {
 	return (
-		<div className="flex-[10]">
+		<div className="2md:flex-[10] mt-4">
 			{/* POSTS */}
-			<div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white shadow">
+			<div className="dark:bg-dark-second dark:text-dark-text flex items-center justify-between px-3 py-2 rounded-lg bg-white shadow">
 				<p className="font-bold text-xl">Posts</p>
-				<div className="flex items-center px-3 rounded-md text-gray-700 cursor-pointer bg-gray-200 hover:bg-gray-300">
+				<div className="dark:bg-dark-third dark:hover:bg-gray-600 dark:text-dark-text flex items-center px-3 rounded-md text-gray-700 cursor-pointer bg-gray-200 hover:bg-gray-300">
 					<DotsHorizontalIcon className="h-5" />
 					<p className="leading-9 ml-1 font-medium text-sm">Filters</p>
 				</div>
