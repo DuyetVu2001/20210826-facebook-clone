@@ -82,6 +82,14 @@ export type MutationDeleteUserArgs = {
   id: Scalars['ID'];
 };
 
+export type PaginatedPosts = {
+  __typename?: 'PaginatedPosts';
+  totalCount: Scalars['Float'];
+  cursor: Scalars['DateTime'];
+  hasMore: Scalars['Boolean'];
+  paginatedPosts: Array<Post>;
+};
+
 export type Post = {
   __typename?: 'Post';
   id: Scalars['ID'];
@@ -107,10 +115,16 @@ export type PostMutationResponse = IMutationResponse & {
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  listPosts?: Maybe<Array<Post>>;
+  listPosts?: Maybe<PaginatedPosts>;
   getPost?: Maybe<Post>;
   getCurrentUser?: Maybe<User>;
   listUsers?: Maybe<Array<User>>;
+};
+
+
+export type QueryListPostsArgs = {
+  cursor?: Maybe<Scalars['DateTime']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -171,10 +185,13 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }> };
 
-export type ListPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListPostsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['DateTime']>;
+}>;
 
 
-export type ListPostsQuery = { __typename?: 'Query', listPosts?: Maybe<Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }>> };
+export type ListPostsQuery = { __typename?: 'Query', listPosts?: Maybe<{ __typename?: 'PaginatedPosts', totalCount: number, cursor: any, hasMore: boolean, paginatedPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
 
 
 export const LoginDocument = gql`
@@ -324,21 +341,26 @@ export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQ
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
 export const ListPostsDocument = gql`
-    query ListPosts {
-  listPosts {
-    id
-    title
-    content
-    keyword
-    image
-    userId
-    user {
+    query ListPosts($limit: Int!, $cursor: DateTime) {
+  listPosts(limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hasMore
+    paginatedPosts {
       id
-      username
-      avatar
+      title
+      content
+      keyword
+      image
+      userId
+      user {
+        id
+        username
+        avatar
+      }
+      createdAt
+      updatedAt
     }
-    createdAt
-    updatedAt
   }
 }
     `;
@@ -355,10 +377,12 @@ export const ListPostsDocument = gql`
  * @example
  * const { data, loading, error } = useListPostsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
-export function useListPostsQuery(baseOptions?: Apollo.QueryHookOptions<ListPostsQuery, ListPostsQueryVariables>) {
+export function useListPostsQuery(baseOptions: Apollo.QueryHookOptions<ListPostsQuery, ListPostsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ListPostsQuery, ListPostsQueryVariables>(ListPostsDocument, options);
       }

@@ -7,6 +7,7 @@ import RightMenu from '../components/homePage/RightMenu';
 import LeftMenu from '../components/LeftMenu';
 import Navbar from '../components/Navbar';
 import Posts from '../components/Posts';
+import { LIMIT } from '../constants';
 import { ListPostsDocument } from '../generated/graphql';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
@@ -48,7 +49,12 @@ const Home: NextPage = () => {
 export const getStaticProps = async () => {
 	const apolloClient = initializeApollo();
 
-	await apolloClient.query({ query: ListPostsDocument });
+	await apolloClient.query({
+		query: ListPostsDocument,
+		variables: {
+			limit: LIMIT,
+		},
+	});
 
 	return addApolloState(apolloClient, { props: {} });
 };

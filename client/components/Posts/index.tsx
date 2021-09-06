@@ -1,13 +1,18 @@
+import { LIMIT } from '../../constants';
 import { useListPostsQuery } from '../../generated/graphql';
 import Post from './Post';
 
 export default function Posts() {
-	const { data } = useListPostsQuery();
+	const { data } = useListPostsQuery({
+		variables: {
+			limit: LIMIT,
+		},
+	});
 
 	return (
 		<>
 			{data &&
-				data?.listPosts?.map((post) => (
+				data.listPosts?.paginatedPosts.map((post) => (
 					<Post
 						key={post.id}
 						avatar={post.user.avatar}

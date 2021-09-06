@@ -3,17 +3,20 @@ import {
 	Ctx,
 	FieldResolver,
 	ID,
+	Int,
 	Mutation,
 	Query,
 	Resolver,
 	Root,
 	UseMiddleware,
 } from 'type-graphql';
+import { LessThan } from 'typeorm';
 import { Post } from '../entities/Post';
 import { User } from '../entities/User';
 import { checkAuth } from '../middleware/checkAuth';
 import { Context } from '../types/Context';
 import { CreatePostInput } from '../types/CreatePostInput';
+import { PaginatedPosts } from '../types/PaginatedPosts';
 import { PostMutationResponse } from '../types/PostMutationResponse';
 import { UpdatePostInput } from '../types/UpdatePostInput';
 
@@ -29,10 +32,31 @@ export class PostResolver {
 		}
 	}
 
-	@Query((_return) => [Post], { nullable: true })
-	async listPosts(): Promise<Post[] | null> {
+	@Query((_return) => PaginatedPosts, { nullable: true })
+	async listPosts(
+		@Arg('limit', (_type) => Int) limit: number,
+		@Arg('cursor', { nullable: true }) cursor: Date
+	): Promise<PaginatedPosts | null> {
 		try {
-			return await Post.find();
+			const allPosts = await Post.find({ order: { createdAt: 'DESC' } });
+			const totalCount = allPosts.length;
+
+			const findOptions: { [key: string]: any } = {
+				order: { createdAt: 'DESC' },
+				take: limit,
+			};
+			cursor && (findOptions.where = { createdAt: LessThan(cursor) });
+			const paginatedPosts = await Post.find(findOptions);
+
+			return {
+				totalCount,
+				cursor: paginatedPosts.slice(-1)[0].createdAt,
+				hasMore: cursor
+					? paginatedPosts.slice(-1)[0].createdAt.toString() !==
+					  allPosts.slice(-1)[0].createdAt.toString()
+					: paginatedPosts.length !== totalCount,
+				paginatedPosts,
+			};
 		} catch (error) {
 			console.error(error);
 			return null;
