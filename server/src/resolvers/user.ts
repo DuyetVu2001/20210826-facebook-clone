@@ -118,7 +118,7 @@ export class UserResolver {
 
 			req.session.destroy((error) => {
 				if (error) {
-					console.log('SESSION ERROR', error);
+					console.error('SESSION ERROR', error);
 					resolve(false);
 				}
 				resolve(true);
