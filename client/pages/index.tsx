@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import ChatRoomCreate from '../components/homePage/MainContent/ChatRoomCreate';
-import NewPost from '../components/homePage/MainContent/NewPost';
+import NewPost from '../components/homePage/MainContent/CreatePost';
 import Story from '../components/homePage/MainContent/Story';
 import RightMenu from '../components/homePage/RightMenu';
 import LeftMenu from '../components/LeftMenu';
