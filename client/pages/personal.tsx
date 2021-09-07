@@ -1,14 +1,19 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useContext } from 'react';
+import Chat from '../components/chat/Chat';
 import Navbar from '../components/Navbar';
 import Header from '../components/personalPage/Header';
 import LeftContent from '../components/personalPage/LeftContent';
 import RightContent from '../components/personalPage/RightContent';
 import { LIMIT } from '../constants';
+import { ChatContext } from '../context/isDisPlayChat/IsDisPlayChat';
 import { ListPostsDocument } from '../generated/graphql';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Personal: NextPage = () => {
+	const { isDisplayChat }: any = useContext(ChatContext);
+
 	return (
 		<div className="dark:bg-dark-main relative bg-gray-100">
 			<Head>
@@ -24,6 +29,8 @@ const Personal: NextPage = () => {
 					<RightContent />
 				</main>
 			</div>
+
+			{isDisplayChat && <Chat />}
 		</div>
 	);
 };

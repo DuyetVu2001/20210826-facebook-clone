@@ -12,6 +12,8 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { ChatContext } from '../../context/isDisPlayChat/IsDisPlayChat';
 import {
 	GetCurrentUserDocument,
 	GetCurrentUserQuery,
@@ -25,6 +27,7 @@ import NavRightItem from './NavRightItem';
 
 export default function Navbar() {
 	const router = useRouter();
+	const { openChat }: any = useContext(ChatContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { data: currentUserData } = useGetCurrentUserQuery();
 
@@ -107,7 +110,9 @@ export default function Navbar() {
 				</Link>
 				<div className="flex items-center">
 					<NavRightItem Icon={MenuIcon} />
-					<NavRightItem Icon={ChatIcon} />
+					<div onClick={openChat}>
+						<NavRightItem Icon={ChatIcon} />
+					</div>
 					<div onClick={logout}>
 						<NavRightItem Icon={BellIcon} number="7" />
 					</div>
