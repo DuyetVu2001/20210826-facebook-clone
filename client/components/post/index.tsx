@@ -1,10 +1,16 @@
+import { ChatAlt2Icon, FireIcon, ShareIcon } from '@heroicons/react/outline';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { ChatAlt2Icon, ShareIcon, FireIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useDeletePostMutation } from '../../generated/graphql';
+import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 
 export default function Post(props: any) {
 	const {
+		id,
+		userId,
 		avatar,
 		username,
 		groupImg,
@@ -14,10 +20,25 @@ export default function Post(props: any) {
 		postImg,
 	}: any = props;
 
+	const router = useRouter();
+	const [isDisplayOptionBox, setIsDisplayOptionBox] = useState(false);
+	const [deletePostMutation] = useDeletePostMutation();
+	const { data: checkAuthData } = useCheckAuth();
+
+	const handleDeletePost = async () => {
+		try {
+			deletePostMutation({
+				variables: { id },
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div className="dark:bg-dark-second dark:text-dark-text mt-4 rounded-lg bg-white shadow">
-			{/* header */}
-			<div className="flex items-center justify-between p-3">
+			{/* HEADER */}
+			<div className="relative flex items-center justify-between p-3">
 				<div className="flex items-center">
 					<div className="relative w-9 h-9 cursor-pointer">
 						<Image
@@ -50,12 +71,28 @@ export default function Post(props: any) {
 						</p>
 					</div>
 				</div>
-				<div className="dark:hover:bg-dark-third grid place-items-center w-9 h-9 hover:bg-gray-200 rounded-full cursor-pointer">
+
+				{/* DOT */}
+				<div
+					className="dark:hover:bg-dark-third grid place-items-center w-9 h-9 hover:bg-gray-200 rounded-full cursor-pointer"
+					onClick={() => setIsDisplayOptionBox(!isDisplayOptionBox)}
+				>
 					<DotsHorizontalIcon className="h-5 text-gray-500" />
 				</div>
+
+				{isDisplayOptionBox &&
+					router.route === '/personal' &&
+					userId === checkAuthData?.getCurrentUser?.id && (
+						<p
+							className="absolute -right-8 -bottom-5 cursor-pointer text-[salmon] shadow"
+							onClick={handleDeletePost}
+						>
+							Cool delete button
+						</p>
+					)}
 			</div>
 
-			{/* Content */}
+			{/* CONTENT */}
 			<div className="px-3">
 				<p className="text-blue-400 800 text-sm cursor-pointer hover:underline">
 					#{hashtag}
@@ -72,7 +109,7 @@ export default function Post(props: any) {
 				/>
 			</div>
 
-			{/* Action bar */}
+			{/* ACTION BAR */}
 			<div className="px-3">
 				<div className="flex items-center justify-between py-2">
 					<div className="">
@@ -106,7 +143,7 @@ export default function Post(props: any) {
 				</div>
 			</div>
 
-			{/* Comments */}
+			{/* COMMENT */}
 		</div>
 	);
 }

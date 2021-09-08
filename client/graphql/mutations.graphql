@@ -45,3 +45,14 @@ mutation CreatePost($createPostInput: CreatePostInput!) {
 		}
 	}
 }
+
+mutation DeletePost($id: ID!) {
+	deletePost(id: $id) {
+		code
+		success
+		message
+		post {
+			id
+		}
+	}
+}

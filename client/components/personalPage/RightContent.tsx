@@ -1,7 +1,17 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import Posts from '../Posts';
+import { LIMIT } from '../../constants';
+import { useListPostsQuery } from '../../generated/graphql';
+import useCheckAuth from '../../hooks/useCheckAuth';
+import Post from '../post';
 
 export default function RightContent() {
+	const { data: checkAuthData } = useCheckAuth();
+	const { data: listPostsData } = useListPostsQuery({
+		variables: {
+			limit: LIMIT,
+		},
+	});
+
 	return (
 		<div className="2md:flex-[10] mt-4">
 			{/* POSTS */}
@@ -14,7 +24,22 @@ export default function RightContent() {
 			</div>
 
 			{/* LIST POSTS */}
-			<Posts />
+			{listPostsData &&
+				listPostsData.listPosts?.paginatedPosts
+					.filter((post) => post.userId === checkAuthData?.getCurrentUser?.id)
+					.map((post) => (
+						<Post
+							key={post.id}
+							id={post.id}
+							userId={post.userId}
+							avatar={post.user.avatar}
+							username={post.user.username}
+							content={post.content}
+							hashtag={post.keyword}
+							postImg={post.image}
+							groupImg={post.image}
+						/>
+					))}
 		</div>
 	);
 }

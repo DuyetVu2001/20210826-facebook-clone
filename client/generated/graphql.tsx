@@ -17,12 +17,11 @@ export type Scalars = {
 };
 
 export type CreatePostInput = {
-  title: Scalars['String'];
   content: Scalars['String'];
-  keyword?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  keyword?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
 };
-
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -32,24 +31,24 @@ export type FieldError = {
 
 export type IMutationResponse = {
   code: Scalars['Float'];
-  success: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
 };
 
 export type LoginInput = {
-  username: Scalars['String'];
   password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   createPost: PostMutationResponse;
-  updatePost: PostMutationResponse;
   deletePost: PostMutationResponse;
-  register: UserMutationResponse;
+  deleteUser: UserMutationResponse;
   login: UserMutationResponse;
   logout: Scalars['Boolean'];
-  deleteUser: UserMutationResponse;
+  register: UserMutationResponse;
+  updatePost: PostMutationResponse;
 };
 
 
@@ -58,18 +57,13 @@ export type MutationCreatePostArgs = {
 };
 
 
-export type MutationUpdatePostArgs = {
-  updatePostInput: UpdatePostInput;
-};
-
-
 export type MutationDeletePostArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationRegisterArgs = {
-  registerInput: RegisterInput;
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -78,47 +72,57 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationDeleteUserArgs = {
-  id: Scalars['ID'];
+export type MutationRegisterArgs = {
+  registerInput: RegisterInput;
+};
+
+
+export type MutationUpdatePostArgs = {
+  updatePostInput: UpdatePostInput;
 };
 
 export type PaginatedPosts = {
   __typename?: 'PaginatedPosts';
-  totalCount: Scalars['Float'];
   cursor: Scalars['DateTime'];
   hasMore: Scalars['Boolean'];
   paginatedPosts: Array<Post>;
+  totalCount: Scalars['Float'];
 };
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['ID'];
-  title: Scalars['String'];
   content: Scalars['String'];
-  keyword?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  userId: Scalars['ID'];
-  user: User;
   createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  keyword?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['ID'];
 };
 
 export type PostMutationResponse = IMutationResponse & {
   __typename?: 'PostMutationResponse';
   code: Scalars['Float'];
-  success: Scalars['Boolean'];
+  errors?: Maybe<Array<FieldError>>;
   message?: Maybe<Scalars['String']>;
   post?: Maybe<Post>;
-  errors?: Maybe<Array<FieldError>>;
+  success: Scalars['Boolean'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  getCurrentUser?: Maybe<User>;
+  getPost?: Maybe<Post>;
   hello: Scalars['String'];
   listPosts?: Maybe<PaginatedPosts>;
-  getPost?: Maybe<Post>;
-  getCurrentUser?: Maybe<User>;
   listUsers?: Maybe<Array<User>>;
+};
+
+
+export type QueryGetPostArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -127,40 +131,35 @@ export type QueryListPostsArgs = {
   limit: Scalars['Int'];
 };
 
-
-export type QueryGetPostArgs = {
-  id: Scalars['ID'];
-};
-
 export type RegisterInput = {
-  username: Scalars['String'];
   password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type UpdatePostInput = {
-  id: Scalars['ID'];
-  title: Scalars['String'];
   content: Scalars['String'];
-  keyword?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
+  keyword?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  username: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   updatedAt: Scalars['DateTime'];
+  username: Scalars['String'];
 };
 
 export type UserMutationResponse = IMutationResponse & {
   __typename?: 'UserMutationResponse';
   code: Scalars['Float'];
-  success: Scalars['Boolean'];
-  message?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
   errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  user?: Maybe<User>;
 };
 
 export type LoginMutationVariables = Exact<{
@@ -181,6 +180,13 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: Maybe<string>, post?: Maybe<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string } }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+
+export type DeletePostMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: Maybe<string>, post?: Maybe<{ __typename?: 'Post', id: string }> } };
 
 export type ListUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -329,6 +335,44 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const DeletePostDocument = gql`
+    mutation DeletePost($id: ID!) {
+  deletePost(id: $id) {
+    code
+    success
+    message
+    post {
+      id
+    }
+  }
+}
+    `;
+export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, DeletePostMutationVariables>;
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<DeletePostMutation, DeletePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePostMutation, DeletePostMutationVariables>(DeletePostDocument, options);
+      }
+export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
+export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
+export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const ListUsersDocument = gql`
     query ListUsers {
   listUsers {
