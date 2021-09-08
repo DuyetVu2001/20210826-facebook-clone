@@ -17,9 +17,9 @@ import { ChatContext } from '../../context/isDisPlayChat/IsDisPlayChat';
 import {
 	GetCurrentUserDocument,
 	GetCurrentUserQuery,
-	useGetCurrentUserQuery,
 	useLogoutMutation,
 } from '../../generated/graphql';
+import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import Logo from '../../public/fb-logo.png';
 import NavCenterItem from './NavCenterItem';
@@ -29,7 +29,7 @@ export default function Navbar() {
 	const router = useRouter();
 	const { openChat }: any = useContext(ChatContext);
 	const [logoutMutation] = useLogoutMutation();
-	const { data: currentUserData } = useGetCurrentUserQuery();
+	const { data: checkAuthData, loading: checkAuthLoading } = useCheckAuth();
 
 	const logout = async () => {
 		await logoutMutation({
@@ -91,23 +91,27 @@ export default function Navbar() {
 
 			{/* right */}
 			<div className="flex items-center ">
-				<Link href="/personal">
-					<a>
-						<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
-							<Image
-								src={currentUserData?.getCurrentUser?.avatar || Avatar}
-								className="cursor-pointer rounded-full"
-								width="26"
-								height="26"
-								layout="fixed"
-								alt="Logo"
-							/>
-							<p className="font-semibold text-sm px-1.5">
-								{currentUserData?.getCurrentUser?.username}
-							</p>
-						</div>
-					</a>
-				</Link>
+				{checkAuthLoading ? (
+					'Loading...'
+				) : (
+					<Link href="/personal">
+						<a>
+							<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
+								<Image
+									src={checkAuthData?.getCurrentUser?.avatar || Avatar}
+									className="cursor-pointer rounded-full"
+									width="26"
+									height="26"
+									layout="fixed"
+									alt="Logo"
+								/>
+								<p className="font-semibold text-sm px-1.5">
+									{checkAuthData?.getCurrentUser?.username}
+								</p>
+							</div>
+						</a>
+					</Link>
+				)}
 				<div className="flex items-center">
 					<NavRightItem Icon={MenuIcon} />
 					<div onClick={openChat}>

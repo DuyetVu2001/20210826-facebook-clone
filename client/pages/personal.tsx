@@ -9,29 +9,37 @@ import RightContent from '../components/personalPage/RightContent';
 import { LIMIT } from '../constants';
 import { ChatContext } from '../context/isDisPlayChat/IsDisPlayChat';
 import { ListPostsDocument } from '../generated/graphql';
+import useCheckAuth from '../hooks/useCheckAuth';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Personal: NextPage = () => {
+	const { loading: checkAuthLoading } = useCheckAuth();
 	const { isDisplayChat }: any = useContext(ChatContext);
 
 	return (
-		<div className="dark:bg-dark-main relative bg-gray-100">
-			<Head>
-				<title>Personal</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<Navbar />
-			<Header />
-			{/* MAIN CONTENT */}
-			<div className="mx-4">
-				<main className="2md:flex 2md:max-w-[880px] mx-auto relative max-w-[500px]">
-					<LeftContent />
-					<RightContent />
-				</main>
-			</div>
+		<>
+			{checkAuthLoading ? (
+				'Loading...'
+			) : (
+				<div className="dark:bg-dark-main relative bg-gray-100">
+					<Head>
+						<title>Personal</title>
+						<link rel="icon" href="/favicon.ico" />
+					</Head>
+					<Navbar />
+					<Header />
+					{/* MAIN CONTENT */}
+					<div className="mx-4">
+						<main className="2md:flex 2md:max-w-[880px] mx-auto relative max-w-[500px]">
+							<LeftContent />
+							<RightContent />
+						</main>
+					</div>
 
-			{isDisplayChat && <Chat />}
-		</div>
+					{isDisplayChat && <Chat />}
+				</div>
+			)}
+		</>
 	);
 };
 
