@@ -62,7 +62,7 @@ export default function Post(props: any) {
 						)}
 					</div>
 
-					<div className="ml-4 font-semibold">
+					<div className="ml-2 font-semibold">
 						<p className="dark:text-dark-text text-gray-800 text-sm cursor-pointer hover:underline">
 							{groupName ? groupName : username}
 						</p>
