@@ -18,14 +18,33 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 
 	const [createPostMutation] = useCreatePostMutation();
 
-	const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
-		createPostMutation({
-			variables: {
-				createPostInput: {
-					title: 'Mock',
-					content,
-				},
+
+		await createPostMutation({
+			variables: { createPostInput: { title: 'Mock', content } },
+			update(cache, { data }) {
+				cache.modify({
+					fields: {
+						listPosts(existing) {
+							if (data?.createPost.success && data.createPost.post) {
+								// Post:new_id
+								const newPostRef = cache.identify(data.createPost.post);
+
+								const newPostsAfterCreation = {
+									...existing,
+									totalCount: existing.totalCount + 1,
+									paginatedPosts: [
+										{ __ref: newPostRef },
+										...existing.paginatedPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
+									],
+								};
+
+								return newPostsAfterCreation;
+							}
+						},
+					},
+				});
 			},
 		});
 		setIsPopup(false);
