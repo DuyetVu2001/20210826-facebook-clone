@@ -12,7 +12,7 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ChatContext } from '../../context/isDisPlayChat/IsDisPlayChat';
 import {
 	GetCurrentUserDocument,
@@ -24,9 +24,11 @@ import Avatar from '../../public/avatar.jpg';
 import Logo from '../../public/fb-logo.png';
 import NavCenterItem from './NavCenterItem';
 import NavRightItem from './NavRightItem';
+import SearchItem from './SearchItem';
 
 export default function Navbar() {
 	const router = useRouter();
+	const [disPlaySearch, setDisPlaySearch] = useState(false);
 	const { openChat }: any = useContext(ChatContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { data: checkAuthData, loading: checkAuthLoading } = useCheckAuth();
@@ -56,29 +58,58 @@ export default function Navbar() {
 	return (
 		<div className="dark:bg-dark-second dark:dark-second sticky z-40 top-0 flex justify-between items-center px-3 py-1.5 md:py-0 md:pt-0.5 bg-white shadow">
 			{/* left */}
-			<div className="flex items-center">
-				<Link href="/">
-					<a>
-						<Image
-							src={Logo}
-							className="cursor-pointer"
-							width="40"
-							height="40"
-							layout="fixed"
-							alt="Logo"
-						/>
-					</a>
-				</Link>
+			<div className="relative z-10 flex items-center">
+				{!disPlaySearch ? (
+					<Link href="/">
+						<a>
+							<Image
+								src={Logo}
+								className="cursor-pointer"
+								width="40"
+								height="40"
+								layout="fixed"
+								alt="Logo"
+							/>
+						</a>
+					</Link>
+				) : (
+					<div className="grid place-items-center	 w-10 h-10">
+						<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
+					</div>
+				)}
 
-				<div className="dark:bg-dark-third flex items-center ml-2 p-2.5 rounded-full bg-gray-100">
-					<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
+				<div
+					className="dark:bg-dark-third flex items-center w-60 ml-2 p-2 rounded-full bg-gray-100"
+					onClick={() => setDisPlaySearch(!disPlaySearch)}
+				>
+					{!disPlaySearch && (
+						<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
+					)}
 					<input
-						className="xl:inline-block w-[200px] ml-1 outline-none placeholder-gray-500 cursor-text text-sm bg-transparent hidden"
+						className="xl:inline-block ml-2 outline-none placeholder-gray-500 cursor-text bg-transparent hidden"
 						type="text"
 						placeholder="Search Facebook"
 					/>
 				</div>
 			</div>
+
+			{/* SEARCH BOX */}
+			{disPlaySearch && (
+				<div className="dark:bg-dark-second absolute top-0 left-0 w-80 h-[500px] pt-14 px-2 rounded-lg bg-white shadow-2xl">
+					<div className="flex items-center justify-between mt-4 mb-0.5 pl-2">
+						<p className="dark:text-dark-text font-medium">Recent Searches</p>
+						<p className="dark:hover:bg-gray-600 px-2 py-1.5 rounded-md text-main-color text-sm hover:bg-gray-100">
+							Edit
+						</p>
+					</div>
+					<SearchItem avatar={Avatar} />
+					<SearchItem avatar={Avatar} />
+					<SearchItem avatar={Avatar} />
+					<SearchItem avatar={Avatar} />
+					<SearchItem avatar={Avatar} />
+					<SearchItem avatar={Avatar} />
+				</div>
+			)}
 
 			{/* center */}
 			<div className="md:inline-flex items-center justify-center hidden">
