@@ -6,6 +6,14 @@ import { useState } from 'react';
 import { useDeletePostMutation } from '../../generated/graphql';
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
+import LikeSVG from '../../public/like.svg';
+import Like from '../../public/like.gif';
+import Haha from '../../public/haha.gif';
+import Love from '../../public/love.gif';
+import Wow from '../../public/wow.gif';
+import Angry from '../../public/angry.gif';
+import Sad from '../../public/sad.gif';
+import Emoji from './Emoji';
 
 export default function Post(props: any) {
 	const {
@@ -111,9 +119,17 @@ export default function Post(props: any) {
 
 			{/* ACTION BAR */}
 			<div className="px-3">
-				<div className="flex items-center justify-between py-2">
-					<div className="">
-						<p className="hover:underline text-sm text-gray-600 dark:text-dark-text cursor-pointer">
+				<div className="flex items-center justify-between py-2.5">
+					<div className="flex items-center">
+						<div className="relative w-[18px] h-[18px]">
+							<Image
+								src={LikeSVG}
+								className={`object-cover rounded-full`}
+								layout="fill"
+								alt="content"
+							/>
+						</div>
+						<p className="ml-2 hover:underline text-sm text-gray-600 dark:text-dark-text cursor-pointer">
 							2.3k
 						</p>
 					</div>
@@ -127,18 +143,29 @@ export default function Post(props: any) {
 					</div>
 				</div>
 
-				<div className="flex items-center border-t-2 border-gray-300 dark:border-dark-third py-1">
+				<div className="relative flex items-center border-t-[1px] border-gray-300 dark:border-dark-third py-1">
 					<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 						<FireIcon className="h-6 text-gray-600" />
-						<p className="">Like</p>
+						<p>Like</p>
 					</div>
+
+					{/* EMOJIS */}
+					{/* <div className="absolute left-0 -top-14 flex items-center bg-white rounded-full shadow-md">
+						<Emoji emoji={Like} />
+						<Emoji emoji={Haha} />
+						<Emoji emoji={Love} />
+						<Emoji emoji={Wow} />
+						<Emoji emoji={Sad} />
+						<Emoji emoji={Angry} />
+					</div> */}
+
 					<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 						<ChatAlt2Icon className="h-6 text-gray-600" />
-						<p className="">Comment</p>
+						<p>Comment</p>
 					</div>
 					<div className="flex-1 justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-dark-third rounded-md py-1 flex items-center">
 						<ShareIcon className="h-6 text-gray-600" />
-						<p className="">Share</p>
+						<p>Share</p>
 					</div>
 				</div>
 			</div>
