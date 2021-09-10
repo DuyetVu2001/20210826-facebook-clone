@@ -8,21 +8,16 @@ import Story from '../components/homePage/MainContent/Story';
 import RightMenu from '../components/homePage/RightMenu';
 import LeftMenu from '../components/LeftMenu';
 import Navbar from '../components/Navbar';
-import Post from '../components/post';
+import Posts from '../components/posts';
 import { LIMIT } from '../constants';
 import { ChatContext } from '../context/isDisPlayChat/IsDisPlayChat';
-import { ListPostsDocument, useListPostsQuery } from '../generated/graphql';
+import { ListPostsDocument } from '../generated/graphql';
 import useCheckAuth from '../hooks/useCheckAuth';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Home: NextPage = () => {
 	const { isDisplayChat }: any = useContext(ChatContext);
 	const { loading: checkAuthLoading } = useCheckAuth();
-	const { data: listPostsData } = useListPostsQuery({
-		variables: {
-			limit: LIMIT,
-		},
-	});
 
 	return (
 		<>
@@ -57,18 +52,7 @@ const Home: NextPage = () => {
 							<ChatRoomCreate />
 
 							{/* LIST POSTS */}
-							{listPostsData &&
-								listPostsData.listPosts?.paginatedPosts.map((post) => (
-									<Post
-										key={post.id}
-										avatar={post.user.avatar}
-										username={post.user.username}
-										content={post.content}
-										hashtag={post.keyword}
-										postImg={post.image}
-										groupImg={post.image}
-									/>
-								))}
+							<Posts />
 						</div>
 					</main>
 
