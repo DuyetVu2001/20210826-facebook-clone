@@ -9,9 +9,9 @@ export default function useCheckAuth() {
 
 	useEffect(() => {
 		if (!loading) {
-			if (data?.getCurrentUser && router.route === '/login') {
+			if (data?.getCurrentUser?.user && router.route === '/login') {
 				router.replace('/');
-			} else if (!data?.getCurrentUser && router.route !== '/login') {
+			} else if (!data?.getCurrentUser?.user && router.route !== '/login') {
 				router.replace('/login');
 			}
 		}

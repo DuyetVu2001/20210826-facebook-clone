@@ -1,7 +1,10 @@
 import { HomeIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { FormEventHandler, useRef, useState } from 'react';
-import { useCreatePostMutation } from '../../../generated/graphql';
+import {
+	useCreatePostMutation,
+	useGetCurrentUserQuery,
+} from '../../../generated/graphql';
 import Avatar from '../../../public/avatar.jpg';
 
 interface CreatePostPopupProps {
@@ -16,6 +19,7 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 	const [content, setContent] = useState('');
 	const [image, setImage] = useState('');
 
+	const { data } = useGetCurrentUserQuery();
 	const [createPostMutation] = useCreatePostMutation();
 
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -96,14 +100,16 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 						<div className="flex items-center">
 							<div className="relative w-10 h-10 cursor-pointer">
 								<Image
-									src={Avatar}
+									src={data?.getCurrentUser?.user.avatar || Avatar}
 									className={`object-cover rounded-full`}
 									layout="fill"
 									alt="content"
 								/>
 							</div>
 							<div className="ml-3 font-semibold">
-								<p className="dark:text-dark-text text-sm">Vũ Ngọc Duyệt</p>
+								<p className="dark:text-dark-text text-sm">
+									{data?.getCurrentUser?.user.username}
+								</p>
 								<div className="inline-flex items-center px-2 py-0.5 rounded-md bg-gray-200 cursor-pointer">
 									<HomeIcon className="h-3" />
 									<p className="mx-1 text-xs cursor-pointer">Only me</p>

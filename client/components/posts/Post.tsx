@@ -4,7 +4,11 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { PaginatedPosts, useDeletePostMutation } from '../../generated/graphql';
+import {
+	PaginatedPosts,
+	useDeletePostMutation,
+	UserPosts,
+} from '../../generated/graphql';
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import LikeSVG from '../../public/like.svg';
@@ -42,6 +46,20 @@ export default function Post(props: any) {
 					if (data?.deletePost.success) {
 						cache.modify({
 							fields: {
+								getCurrentUser(
+									existing: Pick<UserPosts, '__typename' | 'user'> & {
+										userPosts: Reference[];
+									}
+								) {
+									const newListPostsAfterDeletion = {
+										...existing,
+										userPosts: existing.userPosts.filter(
+											(postRefObject) => postRefObject.__ref !== `Post:${id}`
+										),
+									};
+
+									return newListPostsAfterDeletion;
+								},
 								listPosts(
 									existing: Pick<
 										PaginatedPosts,
