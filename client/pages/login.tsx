@@ -44,7 +44,7 @@ const Login: NextPage = () => {
 					data: {
 						getCurrentUser: {
 							user: data?.login.user,
-							userPosts: null,
+							userPosts: [],
 						},
 					},
 				});

@@ -4,7 +4,7 @@ import { Post } from '../entities/Post';
 
 @ObjectType()
 export class UserPosts {
-	@Field()
+	@Field({ nullable: true })
 	user!: User;
 
 	@Field((_type) => [Post])

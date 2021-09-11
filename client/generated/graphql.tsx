@@ -164,7 +164,7 @@ export type UserMutationResponse = IMutationResponse & {
 
 export type UserPosts = {
   __typename?: 'UserPosts';
-  user: User;
+  user?: Maybe<User>;
   userPosts: Array<Post>;
 };
 
@@ -202,7 +202,7 @@ export type ListUsersQuery = { __typename?: 'Query', listUsers?: Maybe<Array<{ _
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'UserPosts', user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }, userPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'UserPosts', user?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }>, userPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
 
 export type ListPostsQueryVariables = Exact<{
   limit: Scalars['Int'];
