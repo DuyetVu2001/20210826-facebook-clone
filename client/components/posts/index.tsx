@@ -36,6 +36,8 @@ export default function Posts() {
 			{data &&
 				data.listPosts?.paginatedPosts.map((post) => (
 					<Post
+						id={post.id}
+						userId={post.userId}
 						key={post.id}
 						avatar={post.user.avatar}
 						username={post.user.username}

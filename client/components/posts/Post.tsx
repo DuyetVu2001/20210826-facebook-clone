@@ -1,19 +1,20 @@
+import { Reference } from '@apollo/client';
 import { ChatAlt2Icon, FireIcon, ShareIcon } from '@heroicons/react/outline';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useDeletePostMutation } from '../../generated/graphql';
+import { PaginatedPosts, useDeletePostMutation } from '../../generated/graphql';
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import LikeSVG from '../../public/like.svg';
-import Like from '../../public/like.gif';
-import Haha from '../../public/haha.gif';
-import Love from '../../public/love.gif';
-import Wow from '../../public/wow.gif';
-import Angry from '../../public/angry.gif';
-import Sad from '../../public/sad.gif';
-import Emoji from './Emoji';
+// import Like from '../../public/like.gif';
+// import Haha from '../../public/haha.gif';
+// import Love from '../../public/love.gif';
+// import Wow from '../../public/wow.gif';
+// import Angry from '../../public/angry.gif';
+// import Sad from '../../public/sad.gif';
+// import Emoji from './Emoji';
 
 export default function Post(props: any) {
 	const {
@@ -35,8 +36,32 @@ export default function Post(props: any) {
 
 	const handleDeletePost = async () => {
 		try {
-			deletePostMutation({
+			await deletePostMutation({
 				variables: { id },
+				update(cache, { data }) {
+					if (data?.deletePost.success) {
+						cache.modify({
+							fields: {
+								listPosts(
+									existing: Pick<
+										PaginatedPosts,
+										'__typename' | 'cursor' | 'hasMore' | 'totalCount'
+									> & { paginatedPosts: Reference[] }
+								) {
+									const newListPostsAfterDeletion = {
+										...existing,
+										totalCount: existing.totalCount - 1,
+										paginatedPosts: existing.paginatedPosts.filter(
+											(postRefObject) => postRefObject.__ref !== `Post:${id}`
+										),
+									};
+
+									return newListPostsAfterDeletion;
+								},
+							},
+						});
+					}
+				},
 			});
 		} catch (error) {
 			console.error(error);
