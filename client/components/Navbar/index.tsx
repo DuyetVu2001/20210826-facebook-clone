@@ -129,7 +129,7 @@ export default function Navbar() {
 						<a>
 							<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
 								<Image
-									src={checkAuthData?.getCurrentUser?.avatar || Avatar}
+									src={checkAuthData?.getCurrentUser?.user.avatar || Avatar}
 									className="cursor-pointer rounded-full"
 									width="26"
 									height="26"
@@ -137,7 +137,7 @@ export default function Navbar() {
 									alt="Logo"
 								/>
 								<p className="font-semibold text-sm px-1.5">
-									{checkAuthData?.getCurrentUser?.username}
+									{checkAuthData?.getCurrentUser?.user.username}
 								</p>
 							</div>
 						</a>

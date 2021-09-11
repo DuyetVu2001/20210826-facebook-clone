@@ -115,7 +115,7 @@ export default function Post(props: any) {
 
 				{isDisplayOptionBox &&
 					router.route === '/personal' &&
-					userId === checkAuthData?.getCurrentUser?.id && (
+					userId === checkAuthData?.getCurrentUser?.user.id && (
 						<p
 							className="absolute -right-8 -bottom-5 cursor-pointer text-[salmon] shadow"
 							onClick={handleDeletePost}

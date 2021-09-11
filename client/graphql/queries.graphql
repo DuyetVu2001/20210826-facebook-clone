@@ -8,9 +8,26 @@ query ListUsers {
 
 query GetCurrentUser {
 	getCurrentUser {
-		id
-		username
-		avatar
+		user {
+			id
+			username
+			avatar
+		}
+		userPosts {
+			id
+			title
+			content
+			keyword
+			image
+			userId
+			user {
+				id
+				username
+				avatar
+			}
+			createdAt
+			updatedAt
+		}
 	}
 }
 

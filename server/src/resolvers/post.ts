@@ -110,7 +110,8 @@ export class PostResolver {
 	@UseMiddleware(checkAuth)
 	async updatePost(
 		@Arg('updatePostInput')
-		{ id, title, content, keyword, image }: UpdatePostInput
+		{ id, title, content, keyword, image }: UpdatePostInput,
+		@Ctx() { req }: Context
 	): Promise<PostMutationResponse> {
 		try {
 			let oldPost = await Post.findOne(id);
@@ -120,6 +121,9 @@ export class PostResolver {
 					success: false,
 					message: 'Post not found!',
 				};
+
+			if (req.session.userId !== oldPost.userId)
+				return { code: 401, success: false, message: 'Unauthenticated!' };
 
 			oldPost.title = title;
 			oldPost.content = content;
@@ -145,7 +149,8 @@ export class PostResolver {
 	@Mutation((_return) => PostMutationResponse)
 	@UseMiddleware(checkAuth)
 	async deletePost(
-		@Arg('id', (_type) => ID) id: number
+		@Arg('id', (_type) => ID) id: number,
+		@Ctx() { req }: Context
 	): Promise<PostMutationResponse> {
 		try {
 			const existingPost = await Post.findOne(id);
@@ -162,6 +167,9 @@ export class PostResolver {
 						},
 					],
 				};
+
+			if (req.session.userId !== existingPost.userId)
+				return { code: 401, success: false, message: 'Unauthenticated!' };
 
 			await Post.delete(existingPost.id);
 

@@ -113,7 +113,7 @@ export type PostMutationResponse = IMutationResponse & {
 
 export type Query = {
   __typename?: 'Query';
-  getCurrentUser?: Maybe<User>;
+  getCurrentUser?: Maybe<UserPosts>;
   getPost?: Maybe<Post>;
   hello: Scalars['String'];
   listPosts?: Maybe<PaginatedPosts>;
@@ -162,6 +162,12 @@ export type UserMutationResponse = IMutationResponse & {
   user?: Maybe<User>;
 };
 
+export type UserPosts = {
+  __typename?: 'UserPosts';
+  user: User;
+  userPosts: Array<Post>;
+};
+
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -196,7 +202,7 @@ export type ListUsersQuery = { __typename?: 'Query', listUsers?: Maybe<Array<{ _
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }> };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'UserPosts', user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }, userPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
 
 export type ListPostsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -412,9 +418,26 @@ export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQ
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   getCurrentUser {
-    id
-    username
-    avatar
+    user {
+      id
+      username
+      avatar
+    }
+    userPosts {
+      id
+      title
+      content
+      keyword
+      image
+      userId
+      user {
+        id
+        username
+        avatar
+      }
+      createdAt
+      updatedAt
+    }
   }
 }
     `;

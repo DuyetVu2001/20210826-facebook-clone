@@ -24,27 +24,46 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 		await createPostMutation({
 			variables: { createPostInput: { title: 'Mock', content } },
 			update(cache, { data }) {
-				cache.modify({
-					fields: {
-						listPosts(existing) {
-							if (data?.createPost.success && data.createPost.post) {
-								// Post:new_id
-								const newPostRef = cache.identify(data.createPost.post);
+				if (data?.createPost.success) {
+					cache.modify({
+						fields: {
+							getCurrentUser(existing) {
+								if (data.createPost.post) {
+									// Post:new_id
+									const newPostRef = cache.identify(data.createPost.post);
 
-								const newPostsAfterCreation = {
-									...existing,
-									totalCount: existing.totalCount + 1,
-									paginatedPosts: [
-										{ __ref: newPostRef },
-										...existing.paginatedPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
-									],
-								};
+									const newPostsAfterCreation = {
+										...existing,
+										userPosts: [
+											{ __ref: newPostRef },
+											...existing.userPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
+										],
+									};
 
-								return newPostsAfterCreation;
-							}
+									return newPostsAfterCreation;
+								}
+							},
+
+							listPosts(existing) {
+								if (data.createPost.post) {
+									// Post:new_id
+									const newPostRef = cache.identify(data.createPost.post);
+
+									const newPostsAfterCreation = {
+										...existing,
+										totalCount: existing.totalCount + 1,
+										paginatedPosts: [
+											{ __ref: newPostRef },
+											...existing.paginatedPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
+										],
+									};
+
+									return newPostsAfterCreation;
+								}
+							},
 						},
-					},
-				});
+					});
+				}
 			},
 		});
 		setIsPopup(false);
@@ -123,7 +142,7 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 						<div className="flex items-center">
 							<HomeIcon className="h-7 text-main-color" />
 
-							<div className="flex items-center hidden">
+							<div className=" items-center hidden">
 								<HomeIcon className="h-7 text-main-color" />
 								<HomeIcon className="h-7 text-main-color" />
 								<HomeIcon className="h-7 text-main-color" />

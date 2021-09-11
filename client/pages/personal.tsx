@@ -6,11 +6,8 @@ import Navbar from '../components/Navbar';
 import Header from '../components/personalPage/Header';
 import LeftContent from '../components/personalPage/LeftContent';
 import RightContent from '../components/personalPage/RightContent';
-import { LIMIT } from '../constants';
 import { ChatContext } from '../context/isDisPlayChat/IsDisPlayChat';
-import { ListPostsDocument } from '../generated/graphql';
 import useCheckAuth from '../hooks/useCheckAuth';
-import { addApolloState, initializeApollo } from '../lib/apolloClient';
 
 const Personal: NextPage = () => {
 	const { loading: checkAuthLoading } = useCheckAuth();
@@ -41,19 +38,6 @@ const Personal: NextPage = () => {
 			)}
 		</>
 	);
-};
-
-export const getStaticProps = async () => {
-	const apolloClient = initializeApollo();
-
-	await apolloClient.query({
-		query: ListPostsDocument,
-		variables: {
-			limit: LIMIT,
-		},
-	});
-
-	return addApolloState(apolloClient, { props: {} });
 };
 
 export default Personal;

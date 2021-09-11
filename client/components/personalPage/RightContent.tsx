@@ -1,7 +1,10 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import Posts from '../posts';
+import { useGetCurrentUserQuery } from '../../generated/graphql';
+import Post from '../posts/Post';
 
 export default function RightContent() {
+	const { data, loading } = useGetCurrentUserQuery();
+
 	return (
 		<div className="2md:flex-[10] mt-4">
 			{/* POSTS */}
@@ -14,7 +17,25 @@ export default function RightContent() {
 			</div>
 
 			{/* LIST POSTS */}
-			<Posts />
+			{data?.getCurrentUser?.userPosts &&
+				data.getCurrentUser?.userPosts.map((post) => (
+					<Post
+						id={post.id}
+						userId={post.userId}
+						key={post.id}
+						avatar={post.user.avatar}
+						username={post.user.username}
+						content={post.content}
+						hashtag={post.keyword}
+						postImg={post.image}
+						groupImg={post.image}
+					/>
+				))}
+			{loading && (
+				<div>
+					<h1>Loading...</h1>
+				</div>
+			)}
 		</div>
 	);
 }
