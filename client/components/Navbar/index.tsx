@@ -125,11 +125,16 @@ export default function Navbar() {
 				{checkAuthLoading ? (
 					'Loading...'
 				) : (
-					<Link href="/personal">
+					<Link
+						href={{
+							pathname: '/personal',
+							query: { id: checkAuthData?.getCurrentUser?.id },
+						}}
+					>
 						<a>
 							<div className="xl:inline-flex dark:hover:bg-dark-third items-center mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer hidden">
 								<Image
-									src={checkAuthData?.getCurrentUser?.user.avatar || Avatar}
+									src={checkAuthData?.getCurrentUser?.avatar || Avatar}
 									className="cursor-pointer rounded-full"
 									width="26"
 									height="26"
@@ -137,7 +142,7 @@ export default function Navbar() {
 									alt="Logo"
 								/>
 								<p className="font-semibold text-sm px-1.5">
-									{checkAuthData?.getCurrentUser?.user.username}
+									{checkAuthData?.getCurrentUser?.username}
 								</p>
 							</div>
 						</a>

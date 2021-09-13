@@ -7,9 +7,8 @@ import { useState } from 'react';
 import {
 	PaginatedPosts,
 	useDeletePostMutation,
-	UserPosts,
+	useGetCurrentUserQuery,
 } from '../../generated/graphql';
-import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import LikeSVG from '../../public/like.svg';
 // import Like from '../../public/like.gif';
@@ -36,7 +35,7 @@ export default function Post(props: any) {
 	const router = useRouter();
 	const [isDisplayOptionBox, setIsDisplayOptionBox] = useState(false);
 	const [deletePostMutation] = useDeletePostMutation();
-	const { data: checkAuthData } = useCheckAuth();
+	const { data } = useGetCurrentUserQuery();
 
 	const handleDeletePost = async () => {
 		try {
@@ -46,14 +45,16 @@ export default function Post(props: any) {
 					if (data?.deletePost.success) {
 						cache.modify({
 							fields: {
-								getCurrentUser(
-									existing: Pick<UserPosts, '__typename' | 'user'> & {
-										userPosts: Reference[];
-									}
+								getUserPosts(
+									existing: Pick<
+										PaginatedPosts,
+										'__typename' | 'cursor' | 'hasMore' | 'totalCount'
+									> & { paginatedPosts: Reference[] }
 								) {
 									const newListPostsAfterDeletion = {
 										...existing,
-										userPosts: existing.userPosts.filter(
+										totalCount: existing.totalCount - 1,
+										paginatedPosts: existing.paginatedPosts.filter(
 											(postRefObject) => postRefObject.__ref !== `Post:${id}`
 										),
 									};
@@ -133,7 +134,7 @@ export default function Post(props: any) {
 
 				{isDisplayOptionBox &&
 					router.route === '/personal' &&
-					userId === checkAuthData?.getCurrentUser?.user.id && (
+					userId === data?.getCurrentUser?.id && (
 						<p
 							className="absolute -right-8 -bottom-5 cursor-pointer text-[salmon] shadow"
 							onClick={handleDeletePost}

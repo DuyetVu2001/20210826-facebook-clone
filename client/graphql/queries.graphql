@@ -8,12 +8,18 @@ query ListUsers {
 
 query GetCurrentUser {
 	getCurrentUser {
-		user {
-			id
-			username
-			avatar
-		}
-		userPosts {
+		id
+		username
+		avatar
+	}
+}
+
+query ListPosts($limit: Int!, $cursor: DateTime) {
+	listPosts(limit: $limit, cursor: $cursor) {
+		totalCount
+		cursor
+		hasMore
+		paginatedPosts {
 			id
 			title
 			content
@@ -31,8 +37,8 @@ query GetCurrentUser {
 	}
 }
 
-query ListPosts($limit: Int!, $cursor: DateTime) {
-	listPosts(limit: $limit, cursor: $cursor) {
+query GetUserPosts($id: ID!, $limit: Int!, $cursor: DateTime) {
+	getUserPosts(id: $id, limit: $limit, cursor: $cursor) {
 		totalCount
 		cursor
 		hasMore

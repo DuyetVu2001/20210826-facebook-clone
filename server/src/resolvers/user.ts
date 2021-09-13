@@ -1,29 +1,21 @@
 import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { COOKIE_NAME } from '../constants';
-import { Post } from '../entities/Post';
 import { User } from '../entities/User';
 import { Context } from '../types/Context';
 import { LoginInput } from '../types/LoginInput';
 import { RegisterInput } from '../types/RegisterInput';
 import { UserMutationResponse } from '../types/UserMutationResponse';
-import { UserPosts } from '../types/UserPosts';
 
 @Resolver((_of) => User)
 export class UserResolver {
-	@Query((_return) => UserPosts, { nullable: true })
-	async getCurrentUser(@Ctx() { req }: Context): Promise<UserPosts | null> {
+	@Query((_return) => User, { nullable: true })
+	async getCurrentUser(@Ctx() { req }: Context): Promise<User | null> {
 		try {
 			if (!req.session.userId) return null;
 			const existingUser = await User.findOne(req.session.userId);
 			if (!existingUser) return null;
 
-			return {
-				user: existingUser,
-				userPosts: await Post.find({
-					where: { userId: req.session.userId },
-					order: { createdAt: 'DESC' },
-				}),
-			};
+			return existingUser;
 		} catch (error) {
 			console.error(error);
 			return null;

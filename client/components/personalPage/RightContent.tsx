@@ -1,9 +1,41 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { useGetCurrentUserQuery } from '../../generated/graphql';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import {
+	useGetCurrentUserQuery,
+	useGetUserPostsQuery,
+} from '../../generated/graphql';
 import Post from '../posts/Post';
 
 export default function RightContent() {
-	const { data, loading } = useGetCurrentUserQuery();
+	const router = useRouter();
+	const { data: currentUserData } = useGetCurrentUserQuery();
+	const id = router.query.id && currentUserData?.getCurrentUser?.id;
+
+	const { data, loading, fetchMore } = useGetUserPostsQuery({
+		variables: { id, limit: 4 },
+		// component nao render boi cai Posts query, se rerender khi networkStatus thay doi, tuc la fetchMore
+		notifyOnNetworkStatusChange: true,
+	});
+
+	// WHEN USER SCROLL TO BOTTOM PAGE ==> FETCH MORE DATA
+	useEffect(() => {
+		const loadMorePosts = () =>
+			fetchMore({ variables: { cursor: data?.getUserPosts?.cursor } });
+		const handleScroll = () => {
+			if (
+				window.innerHeight + document.documentElement.scrollTop !==
+				document.documentElement.offsetHeight
+			)
+				return;
+			if (!loading && data?.getUserPosts?.hasMore) {
+				loadMorePosts();
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, [data, fetchMore, loading]);
 
 	return (
 		<div className="2md:flex-[10] mt-4">
@@ -17,8 +49,8 @@ export default function RightContent() {
 			</div>
 
 			{/* LIST POSTS */}
-			{data?.getCurrentUser?.userPosts &&
-				data.getCurrentUser?.userPosts.map((post) => (
+			{data?.getUserPosts?.paginatedPosts &&
+				data?.getUserPosts?.paginatedPosts.map((post) => (
 					<Post
 						id={post.id}
 						userId={post.userId}

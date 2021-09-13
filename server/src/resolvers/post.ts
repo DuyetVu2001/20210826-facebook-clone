@@ -33,6 +33,49 @@ export class PostResolver {
 	}
 
 	@Query((_return) => PaginatedPosts, { nullable: true })
+	async getUserPosts(
+		@Arg('id', (_type) => ID) id: number,
+		@Arg('limit', (_type) => Int) limit: number,
+		@Arg('cursor', { nullable: true }) cursor: Date
+	): Promise<PaginatedPosts | null> {
+		try {
+			const allPosts = await Post.find({
+				where: { userId: id },
+				order: { createdAt: 'DESC' },
+			});
+			const totalCount = allPosts.length;
+
+			let findOptions: { [key: string]: any } = {
+				order: { createdAt: 'DESC' },
+				take: limit,
+				where: { userId: id },
+			};
+
+			cursor &&
+				(findOptions = {
+					order: { createdAt: 'DESC' },
+					take: limit,
+					where: { userId: id, createdAt: LessThan(cursor) },
+				});
+
+			const paginatedPosts = await Post.find(findOptions);
+
+			return {
+				totalCount,
+				cursor: paginatedPosts.slice(-1)[0].createdAt,
+				hasMore: cursor
+					? paginatedPosts.slice(-1)[0].createdAt.toString() !==
+					  allPosts.slice(-1)[0].createdAt.toString()
+					: paginatedPosts.length !== totalCount,
+				paginatedPosts,
+			};
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	}
+
+	@Query((_return) => PaginatedPosts, { nullable: true })
 	async listPosts(
 		@Arg('limit', (_type) => Int) limit: number,
 		@Arg('cursor', { nullable: true }) cursor: Date

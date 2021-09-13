@@ -42,10 +42,7 @@ const Login: NextPage = () => {
 				cache.writeQuery<GetCurrentUserQuery>({
 					query: GetCurrentUserDocument,
 					data: {
-						getCurrentUser: {
-							user: data?.login.user,
-							userPosts: [],
-						},
+						getCurrentUser: data?.login.user,
 					},
 				});
 			},

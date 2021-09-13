@@ -113,8 +113,9 @@ export type PostMutationResponse = IMutationResponse & {
 
 export type Query = {
   __typename?: 'Query';
-  getCurrentUser?: Maybe<UserPosts>;
+  getCurrentUser?: Maybe<User>;
   getPost?: Maybe<Post>;
+  getUserPosts?: Maybe<PaginatedPosts>;
   hello: Scalars['String'];
   listPosts?: Maybe<PaginatedPosts>;
   listUsers?: Maybe<Array<User>>;
@@ -123,6 +124,13 @@ export type Query = {
 
 export type QueryGetPostArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetUserPostsArgs = {
+  cursor?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 
@@ -162,12 +170,6 @@ export type UserMutationResponse = IMutationResponse & {
   user?: Maybe<User>;
 };
 
-export type UserPosts = {
-  __typename?: 'UserPosts';
-  user?: Maybe<User>;
-  userPosts: Array<Post>;
-};
-
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -202,7 +204,7 @@ export type ListUsersQuery = { __typename?: 'Query', listUsers?: Maybe<Array<{ _
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'UserPosts', user?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }>, userPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }> };
 
 export type ListPostsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -211,6 +213,15 @@ export type ListPostsQueryVariables = Exact<{
 
 
 export type ListPostsQuery = { __typename?: 'Query', listPosts?: Maybe<{ __typename?: 'PaginatedPosts', totalCount: number, cursor: any, hasMore: boolean, paginatedPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
+
+export type GetUserPostsQueryVariables = Exact<{
+  id: Scalars['ID'];
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['DateTime']>;
+}>;
+
+
+export type GetUserPostsQuery = { __typename?: 'Query', getUserPosts?: Maybe<{ __typename?: 'PaginatedPosts', totalCount: number, cursor: any, hasMore: boolean, paginatedPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
 
 
 export const LoginDocument = gql`
@@ -418,26 +429,9 @@ export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQ
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   getCurrentUser {
-    user {
-      id
-      username
-      avatar
-    }
-    userPosts {
-      id
-      title
-      content
-      keyword
-      image
-      userId
-      user {
-        id
-        username
-        avatar
-      }
-      createdAt
-      updatedAt
-    }
+    id
+    username
+    avatar
   }
 }
     `;
@@ -521,3 +515,57 @@ export function useListPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ListPostsQueryHookResult = ReturnType<typeof useListPostsQuery>;
 export type ListPostsLazyQueryHookResult = ReturnType<typeof useListPostsLazyQuery>;
 export type ListPostsQueryResult = Apollo.QueryResult<ListPostsQuery, ListPostsQueryVariables>;
+export const GetUserPostsDocument = gql`
+    query GetUserPosts($id: ID!, $limit: Int!, $cursor: DateTime) {
+  getUserPosts(id: $id, limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hasMore
+    paginatedPosts {
+      id
+      title
+      content
+      keyword
+      image
+      userId
+      user {
+        id
+        username
+        avatar
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserPostsQuery__
+ *
+ * To run a query within a React component, call `useGetUserPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserPostsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetUserPostsQuery(baseOptions: Apollo.QueryHookOptions<GetUserPostsQuery, GetUserPostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserPostsQuery, GetUserPostsQueryVariables>(GetUserPostsDocument, options);
+      }
+export function useGetUserPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserPostsQuery, GetUserPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserPostsQuery, GetUserPostsQueryVariables>(GetUserPostsDocument, options);
+        }
+export type GetUserPostsQueryHookResult = ReturnType<typeof useGetUserPostsQuery>;
+export type GetUserPostsLazyQueryHookResult = ReturnType<typeof useGetUserPostsLazyQuery>;
+export type GetUserPostsQueryResult = Apollo.QueryResult<GetUserPostsQuery, GetUserPostsQueryVariables>;

@@ -31,23 +31,23 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 				if (data?.createPost.success) {
 					cache.modify({
 						fields: {
-							getCurrentUser(existing) {
+							getUserPosts(existing) {
 								if (data.createPost.post) {
 									// Post:new_id
 									const newPostRef = cache.identify(data.createPost.post);
 
 									const newPostsAfterCreation = {
 										...existing,
-										userPosts: [
+										totalCount: existing.totalCount + 1,
+										paginatedPosts: [
 											{ __ref: newPostRef },
-											...existing.userPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
+											...existing.paginatedPosts, // [{__ref: 'Post:1'}, {__ref: 'Post:2'}]
 										],
 									};
 
 									return newPostsAfterCreation;
 								}
 							},
-
 							listPosts(existing) {
 								if (data.createPost.post) {
 									// Post:new_id
@@ -100,7 +100,7 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 						<div className="flex items-center">
 							<div className="relative w-10 h-10 cursor-pointer">
 								<Image
-									src={data?.getCurrentUser?.user.avatar || Avatar}
+									src={data?.getCurrentUser?.avatar || Avatar}
 									className={`object-cover rounded-full`}
 									layout="fill"
 									alt="content"
@@ -108,7 +108,7 @@ export default function CreatePostPopup(props: CreatePostPopupProps) {
 							</div>
 							<div className="ml-3 font-semibold">
 								<p className="dark:text-dark-text text-sm">
-									{data?.getCurrentUser?.user.username}
+									{data?.getCurrentUser?.username}
 								</p>
 								<div className="inline-flex items-center px-2 py-0.5 rounded-md bg-gray-200 cursor-pointer">
 									<HomeIcon className="h-3" />
