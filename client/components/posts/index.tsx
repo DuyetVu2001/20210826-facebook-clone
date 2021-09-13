@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import { useEffect } from 'react';
 import { LIMIT } from '../../constants';
 import { useListPostsQuery } from '../../generated/graphql';
+import Loading from '../../public/loading.gif';
 import Post from './Post';
 
 export default function Posts() {
@@ -32,7 +34,7 @@ export default function Posts() {
 	}, [data, fetchMore, loading]);
 
 	return (
-		<div className="">
+		<div>
 			{data &&
 				data.listPosts?.paginatedPosts.map((post) => (
 					<Post
@@ -48,8 +50,13 @@ export default function Posts() {
 					/>
 				))}
 			{loading && (
-				<div>
-					<h1>Loading...</h1>
+				<div className="relative mx-auto w-6 h-6">
+					<Image
+						src={Loading}
+						className={`object-cover rounded-full`}
+						layout="fill"
+						alt="content"
+					/>
 				</div>
 			)}
 		</div>

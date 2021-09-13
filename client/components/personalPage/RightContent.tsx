@@ -1,10 +1,12 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import {
 	useGetCurrentUserQuery,
 	useGetUserPostsQuery,
 } from '../../generated/graphql';
+import Loading from '../../public/loading.gif';
 import Post from '../posts/Post';
 
 export default function RightContent() {
@@ -64,8 +66,13 @@ export default function RightContent() {
 					/>
 				))}
 			{loading && (
-				<div>
-					<h1>Loading...</h1>
+				<div className="relative mx-auto w-6 h-6">
+					<Image
+						src={Loading}
+						className={`object-cover rounded-full`}
+						layout="fill"
+						alt="content"
+					/>
 				</div>
 			)}
 		</div>

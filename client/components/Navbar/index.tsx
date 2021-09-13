@@ -22,6 +22,7 @@ import {
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import Logo from '../../public/fb-logo.png';
+import Loading from '../../public/loading.gif';
 import NavCenterItem from './NavCenterItem';
 import NavRightItem from './NavRightItem';
 import SearchItem from './SearchItem';
@@ -123,7 +124,14 @@ export default function Navbar() {
 			{/* right */}
 			<div className="flex items-center ">
 				{checkAuthLoading ? (
-					'Loading...'
+					<div className="relative mx-auto w-6 h-6 mr-2">
+						<Image
+							src={Loading}
+							className={`object-cover rounded-full`}
+							layout="fill"
+							alt="content"
+						/>
+					</div>
 				) : (
 					<Link
 						href={{
