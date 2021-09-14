@@ -5,7 +5,7 @@ import {
 	HomeIcon,
 	MenuIcon,
 	SearchIcon,
-	UserGroupIcon,
+	UserGroupIcon
 } from '@heroicons/react/outline';
 import { BellIcon, ChatIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { useTheme } from 'next-themes';
@@ -17,19 +17,21 @@ import { ChatContext } from '../../context/isDisPlayChat/IsDisPlayChat';
 import {
 	GetCurrentUserDocument,
 	GetCurrentUserQuery,
-	useLogoutMutation,
+	useLogoutMutation
 } from '../../generated/graphql';
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
 import Logo from '../../public/fb-logo.png';
 import Loading from '../../public/loading.gif';
+import DropdownMenu from './DropdownMenu';
 import NavCenterItem from './NavCenterItem';
 import NavRightItem from './NavRightItem';
 import SearchItem from './SearchItem';
 
 export default function Navbar() {
 	const router = useRouter();
-	const [disPlaySearch, setDisPlaySearch] = useState(false);
+	const [isSearchBox, setIsSearchBox] = useState(false);
+	const [isDropdownMenu, setIsDropdownMenu] = useState(false);
 	const { openChat }: any = useContext(ChatContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { data: checkAuthData, loading: checkAuthLoading } = useCheckAuth();
@@ -60,7 +62,7 @@ export default function Navbar() {
 		<div className="dark:bg-dark-second dark:dark-second sticky z-40 top-0 flex justify-between items-center px-3 py-1.5 md:py-0 md:pt-0.5 bg-white shadow">
 			{/* left */}
 			<div className="relative z-10 flex items-center">
-				{!disPlaySearch ? (
+				{!isSearchBox ? (
 					<Link href="/">
 						<a>
 							<Image
@@ -80,14 +82,14 @@ export default function Navbar() {
 				)}
 
 				<div
-					className="dark:bg-dark-third flex items-center w-60 ml-2 p-2 rounded-full bg-gray-100"
-					onClick={() => setDisPlaySearch(!disPlaySearch)}
+					className="dark:bg-dark-third flex items-center ml-2 p-2 rounded-full bg-gray-100"
+					onClick={() => setIsSearchBox(!isSearchBox)}
 				>
-					{!disPlaySearch && (
+					{!isSearchBox && (
 						<SearchIcon className="h-5 text-gray-500 cursor-pointer" />
 					)}
 					<input
-						className="xl:inline-block ml-2 outline-none placeholder-gray-500 cursor-text bg-transparent hidden"
+						className="xl:inline-block w-52 hidden ml-2 outline-none placeholder-gray-500 cursor-text bg-transparent"
 						type="text"
 						placeholder="Search Facebook"
 					/>
@@ -95,7 +97,7 @@ export default function Navbar() {
 			</div>
 
 			{/* SEARCH BOX */}
-			{disPlaySearch && (
+			{isSearchBox && (
 				<div className="dark:bg-dark-second absolute top-0 left-0 w-80 h-[500px] pt-14 px-2 rounded-lg bg-white shadow-2xl">
 					<div className="flex items-center justify-between mt-4 mb-0.5 pl-2">
 						<p className="dark:text-dark-text font-medium">Recent Searches</p>
@@ -161,11 +163,14 @@ export default function Navbar() {
 					<div onClick={openChat}>
 						<NavRightItem Icon={ChatIcon} />
 					</div>
-					<div onClick={logout}>
-						<NavRightItem Icon={BellIcon} number="7" />
-					</div>
-					<div onClick={toggleTheme}>
-						<NavRightItem Icon={ChevronDownIcon} />
+					<NavRightItem Icon={BellIcon} number="7" />
+					<div className="relative">
+						<div onClick={() => setIsDropdownMenu(!isDropdownMenu)}>
+							<NavRightItem Icon={ChevronDownIcon} />
+						</div>
+						{isDropdownMenu && (
+							<DropdownMenu toggleTheme={toggleTheme} logout={logout} />
+						)}
 					</div>
 				</div>
 			</div>
