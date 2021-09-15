@@ -37,8 +37,8 @@ export default function Chat() {
 				</div>
 			</div>
 			{/* BODY */}
-			<div className="flex-1 overflow-auto px-2">
-				<MessageItem message="được số tiền vượt quá thu nhập trung" me />
+			<div className="flex-1 flex flex-col-reverse overflow-auto px-2">
+				<MessageItem message="được số tiền vượt quá thu nhập trung 1" me />
 				<MessageItem message="được số tiền vượt quá thu nhập trung" />
 				<MessageItem message="được số tiền vượt " />
 				<MessageItem message="được số tiền vượt quá thu nhập trung" me />
