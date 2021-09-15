@@ -2,6 +2,7 @@ require('dotenv').config();
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import MongoStore from 'connect-mongo';
+import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
@@ -9,13 +10,13 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { COOKIE_NAME, __prod__ } from './constants';
+import { Message } from './entities/Message';
 import { Post } from './entities/Post';
 import { User } from './entities/User';
-import { HelloResolver } from './resolvers/hello';
+import { MessageResolver } from './resolvers/message';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
 import { Context } from './types/Context';
-import cors from 'cors';
 
 const main = async () => {
 	await createConnection({
@@ -25,7 +26,7 @@ const main = async () => {
 		password: process.env.DB_PASSWORD,
 		logging: true,
 		synchronize: true,
-		entities: [User, Post],
+		entities: [User, Post, Message],
 	});
 
 	const app = express();
@@ -61,7 +62,7 @@ const main = async () => {
 
 	const apolloServer = new ApolloServer({
 		schema: await buildSchema({
-			resolvers: [HelloResolver, UserResolver, PostResolver],
+			resolvers: [MessageResolver, UserResolver, PostResolver],
 			validate: false,
 		}),
 		plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
