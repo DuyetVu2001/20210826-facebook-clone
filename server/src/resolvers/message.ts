@@ -1,10 +1,30 @@
-import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
+import {
+	Arg,
+	Ctx,
+	FieldResolver,
+	ID,
+	Mutation,
+	Query,
+	Resolver,
+	Root,
+} from 'type-graphql';
 import { Message } from '../entities/Message';
+import { User } from '../entities/User';
 import { Context } from '../types/Context';
 import { MessageInput } from '../types/MessageInput';
 
-@Resolver()
+@Resolver((_return) => Message)
 export class MessageResolver {
+	@FieldResolver((_return) => User)
+	async user(@Root() root: Message): Promise<User | undefined | null> {
+		try {
+			return await User.findOne(root.userId);
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	}
+
 	@Query((_return) => [Message], { nullable: true })
 	async listMessages(
 		@Arg('roomId', (_type) => ID) roomId: number

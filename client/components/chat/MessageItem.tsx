@@ -1,20 +1,17 @@
 import Image from 'next/image';
-import Avatar from '../../public/avatar.jpg';
 
-export default function MessageItem({ message, me }: any) {
+export default function MessageItem({ message, me, avatar }: any) {
 	return (
 		<div className={`flex mb-0.5 ${me && 'justify-end'}`}>
 			<div className="flex items-end max-w-[210px]">
-				{!me && (
-					<div>
-						<div className="relative w-7 h-7 mr-2">
-							<Image
-								src={Avatar}
-								className={`object-cover rounded-full`}
-								layout="fill"
-								alt="content"
-							/>
-						</div>
+				{!me && avatar && (
+					<div className="relative w-7 h-7 mr-2">
+						<Image
+							src={avatar}
+							className={`object-cover rounded-full`}
+							layout="fill"
+							alt="content"
+						/>
 					</div>
 				)}
 
