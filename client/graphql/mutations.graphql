@@ -56,3 +56,7 @@ mutation DeletePost($id: ID!) {
 		}
 	}
 }
+
+mutation CreateMessage($messageInput: MessageInput!) {
+	createMessage(messageInput: $messageInput)
+}

@@ -40,8 +40,25 @@ export type LoginInput = {
   username: Scalars['String'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  message: Scalars['String'];
+  roomId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['ID'];
+};
+
+export type MessageInput = {
+  message: Scalars['String'];
+  roomId: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createMessage: Scalars['Boolean'];
   createPost: PostMutationResponse;
   deletePost: PostMutationResponse;
   deleteUser: UserMutationResponse;
@@ -49,6 +66,11 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: UserMutationResponse;
   updatePost: PostMutationResponse;
+};
+
+
+export type MutationCreateMessageArgs = {
+  messageInput: MessageInput;
 };
 
 
@@ -116,7 +138,7 @@ export type Query = {
   getCurrentUser?: Maybe<User>;
   getPost?: Maybe<Post>;
   getUserPosts?: Maybe<PaginatedPosts>;
-  hello: Scalars['String'];
+  listMessages?: Maybe<Array<Message>>;
   listPosts?: Maybe<PaginatedPosts>;
   listUsers?: Maybe<Array<User>>;
 };
@@ -131,6 +153,11 @@ export type QueryGetUserPostsArgs = {
   cursor?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   limit: Scalars['Int'];
+};
+
+
+export type QueryListMessagesArgs = {
+  roomId: Scalars['ID'];
 };
 
 
@@ -196,6 +223,13 @@ export type DeletePostMutationVariables = Exact<{
 
 export type DeletePostMutation = { __typename?: 'Mutation', deletePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: Maybe<string>, post?: Maybe<{ __typename?: 'Post', id: string }> } };
 
+export type CreateMessageMutationVariables = Exact<{
+  messageInput: MessageInput;
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: boolean };
+
 export type ListUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -222,6 +256,13 @@ export type GetUserPostsQueryVariables = Exact<{
 
 
 export type GetUserPostsQuery = { __typename?: 'Query', getUserPosts?: Maybe<{ __typename?: 'PaginatedPosts', totalCount: number, cursor: any, hasMore: boolean, paginatedPosts: Array<{ __typename?: 'Post', id: string, title: string, content: string, keyword?: Maybe<string>, image?: Maybe<string>, userId: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }> }> };
+
+export type ListMessagesQueryVariables = Exact<{
+  roomId: Scalars['ID'];
+}>;
+
+
+export type ListMessagesQuery = { __typename?: 'Query', listMessages?: Maybe<Array<{ __typename?: 'Message', id: string, userId: string, message: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, username: string, avatar?: Maybe<string> } }>> };
 
 
 export const LoginDocument = gql`
@@ -390,6 +431,37 @@ export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
 export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($messageInput: MessageInput!) {
+  createMessage(messageInput: $messageInput)
+}
+    `;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      messageInput: // value for 'messageInput'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const ListUsersDocument = gql`
     query ListUsers {
   listUsers {
@@ -569,3 +641,47 @@ export function useGetUserPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetUserPostsQueryHookResult = ReturnType<typeof useGetUserPostsQuery>;
 export type GetUserPostsLazyQueryHookResult = ReturnType<typeof useGetUserPostsLazyQuery>;
 export type GetUserPostsQueryResult = Apollo.QueryResult<GetUserPostsQuery, GetUserPostsQueryVariables>;
+export const ListMessagesDocument = gql`
+    query ListMessages($roomId: ID!) {
+  listMessages(roomId: $roomId) {
+    id
+    userId
+    message
+    user {
+      id
+      username
+      avatar
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useListMessagesQuery__
+ *
+ * To run a query within a React component, call `useListMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListMessagesQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useListMessagesQuery(baseOptions: Apollo.QueryHookOptions<ListMessagesQuery, ListMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListMessagesQuery, ListMessagesQueryVariables>(ListMessagesDocument, options);
+      }
+export function useListMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMessagesQuery, ListMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListMessagesQuery, ListMessagesQueryVariables>(ListMessagesDocument, options);
+        }
+export type ListMessagesQueryHookResult = ReturnType<typeof useListMessagesQuery>;
+export type ListMessagesLazyQueryHookResult = ReturnType<typeof useListMessagesLazyQuery>;
+export type ListMessagesQueryResult = Apollo.QueryResult<ListMessagesQuery, ListMessagesQueryVariables>;

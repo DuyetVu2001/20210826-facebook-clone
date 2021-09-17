@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'reflect-metadata';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import MongoStore from 'connect-mongo';
@@ -6,7 +6,6 @@ import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
-import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { COOKIE_NAME, __prod__ } from './constants';
@@ -17,6 +16,11 @@ import { MessageResolver } from './resolvers/message';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
 import { Context } from './types/Context';
+require('dotenv').config();
+
+// import { createServer } from 'http';
+// import { execute, subscribe } from 'graphql';
+// import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 const main = async () => {
 	await createConnection({
@@ -30,6 +34,7 @@ const main = async () => {
 	});
 
 	const app = express();
+	// const httpServer = createServer(app);
 
 	app.use(
 		cors({
@@ -65,9 +70,34 @@ const main = async () => {
 			resolvers: [MessageResolver, UserResolver, PostResolver],
 			validate: false,
 		}),
-		plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+		plugins: [
+			ApolloServerPluginLandingPageGraphQLPlayground(),
+			// {
+			// 	async serverWillStart() {
+			// 		return {
+			// 			async drainServer() {
+			// 				subscriptionServer.close();
+			// 			},
+			// 		};
+			// 	},
+			// },
+		],
 		context: ({ req, res }): Context => ({ req, res }),
 	});
+
+	// const subscriptionServer = SubscriptionServer.create(
+	// 	{
+	// 		// This is the `schema` we just created.
+	// 		schema: await buildSchema({
+	// 			resolvers: [MessageResolver, UserResolver, PostResolver],
+	// 			validate: false,
+	// 		}),
+	// 		// These are imported from `graphql`.
+	// 		execute,
+	// 		subscribe,
+	// 	},
+	// 	{ server: httpServer, path: apolloServer.graphqlPath }
+	// );
 
 	await apolloServer.start();
 
@@ -79,6 +109,14 @@ const main = async () => {
 			`Server started on port ${PORT}./nGraphQL server started on http://localhost:${PORT}${apolloServer.graphqlPath}`
 		)
 	);
+	// httpServer.listen(PORT, () => {
+	// 	console.log(
+	// 		`🚀 Query endpoint ready at http://localhost:${PORT}${apolloServer.graphqlPath}`
+	// 	);
+	// 	console.log(
+	// 		`🚀 Subscription endpoint ready at ws://localhost:${PORT}${apolloServer.graphqlPath}`
+	// 	);
+	// });
 };
 
 main().catch((error) => console.error(error));
