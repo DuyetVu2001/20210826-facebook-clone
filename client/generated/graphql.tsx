@@ -182,8 +182,10 @@ export type UpdatePostInput = {
 export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
+  coverImage?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  province?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
 };
@@ -238,7 +240,7 @@ export type ListUsersQuery = { __typename?: 'Query', listUsers?: Maybe<Array<{ _
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string> }> };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: Maybe<{ __typename?: 'User', id: string, username: string, avatar?: Maybe<string>, province?: Maybe<string>, coverImage?: Maybe<string> }> };
 
 export type ListPostsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -504,6 +506,8 @@ export const GetCurrentUserDocument = gql`
     id
     username
     avatar
+    province
+    coverImage
   }
 }
     `;

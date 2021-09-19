@@ -6,7 +6,7 @@ import {
 	Entity,
 	OneToMany,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn
+	UpdateDateColumn,
 } from 'typeorm';
 import { Message } from './Message';
 import { Post } from './Post';
@@ -28,6 +28,14 @@ export class User extends BaseEntity {
 	@Field({ nullable: true })
 	@Column({ nullable: true })
 	avatar: string;
+
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	coverImage: string;
+
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	province: string;
 
 	@OneToMany(() => Post, (post) => post.user)
 	posts: Post[];

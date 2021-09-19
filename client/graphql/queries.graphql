@@ -11,6 +11,8 @@ query GetCurrentUser {
 		id
 		username
 		avatar
+		province
+		coverImage
 	}
 }
 

@@ -12,7 +12,7 @@ import useCheckAuth from '../hooks/useCheckAuth';
 import Loading from '../public/loading.gif';
 
 const Personal: NextPage = () => {
-	const { loading: checkAuthLoading } = useCheckAuth();
+	const { data, loading: checkAuthLoading } = useCheckAuth();
 	const { isDisplayChat }: any = useContext(ChatContext);
 
 	return (
@@ -37,11 +37,15 @@ const Personal: NextPage = () => {
 			)}
 
 			<Navbar />
-			<Header />
+			<Header
+				coverImage={data?.getCurrentUser?.coverImage}
+				avatar={data?.getCurrentUser?.avatar}
+				username={data?.getCurrentUser?.username}
+			/>
 			{/* MAIN CONTENT */}
 			<div className="mx-4">
 				<main className="2md:flex 2md:max-w-[880px] mx-auto relative max-w-[500px]">
-					<LeftContent />
+					<LeftContent province={data?.getCurrentUser?.province} />
 					<RightContent />
 				</main>
 			</div>

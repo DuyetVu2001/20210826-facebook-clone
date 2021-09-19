@@ -2,7 +2,7 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import ThaoAvatar from '../../public/thao-avatar.jpg';
 
-export default function LeftContent() {
+export default function LeftContent({ province }: any) {
 	let arrs = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 	return (
@@ -14,9 +14,11 @@ export default function LeftContent() {
 					<DotsHorizontalIcon className="h-5" />
 					<p className="leading-9 ml-1 text-sm">
 						Lives in{' '}
-						<span className="dark:text-dark-text font-medium text-gray-800 cursor-pointer hover:underline">
-							Thái Bình
-						</span>
+						{province && (
+							<span className="dark:text-dark-text font-medium text-gray-800 cursor-pointer hover:underline">
+								{province}
+							</span>
+						)}
 					</p>
 				</div>
 			</div>
