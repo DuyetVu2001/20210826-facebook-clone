@@ -5,7 +5,7 @@ import {
 	HomeIcon,
 	MenuIcon,
 	SearchIcon,
-	UserGroupIcon
+	UserGroupIcon,
 } from '@heroicons/react/outline';
 import { BellIcon, ChatIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { useTheme } from 'next-themes';
@@ -17,7 +17,7 @@ import { ChatContext } from '../../context/isDisPlayChat/IsDisPlayChat';
 import {
 	GetCurrentUserDocument,
 	GetCurrentUserQuery,
-	useLogoutMutation
+	useLogoutMutation,
 } from '../../generated/graphql';
 import useCheckAuth from '../../hooks/useCheckAuth';
 import Avatar from '../../public/avatar.jpg';
@@ -116,7 +116,11 @@ export default function Navbar() {
 
 			{/* center */}
 			<div className="md:inline-flex items-center justify-center hidden">
-				<NavCenterItem active Icon={HomeIcon} />
+				<Link href="/">
+					<a>
+						<NavCenterItem active Icon={HomeIcon} />
+					</a>
+				</Link>
 				<NavCenterItem Icon={DesktopComputerIcon} number="11" />
 				<NavCenterItem Icon={ArchiveIcon} />
 				<NavCenterItem Icon={UserGroupIcon} number="7" />
