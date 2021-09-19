@@ -10,7 +10,6 @@ import {
 	useLoginMutation,
 } from '../generated/graphql';
 import useCheckAuth from '../hooks/useCheckAuth';
-import Avatar from '../public/avatar.jpg';
 import Logo from '../public/fb-logo.png';
 import Loading from '../public/loading.gif';
 
@@ -83,24 +82,27 @@ const Login: NextPage = () => {
 				onClick={toggleTheme}
 			>
 				<Image src={Logo} width="56" height="56" layout="fixed" alt="Logo" />
+				<p>Pass: 123</p>
 			</div>
 
 			{/* List user */}
 			<div className="flex flex-wrap items-center justify-center w-2/5 cursor-pointer">
-				{listUsers.map(({ id, username }: any) => (
+				{listUsers.map(({ id, username, avatar }: any) => (
 					<div className="m-4 flex flex-col items-center" key={id}>
-						<Image
-							src={Avatar}
-							className="rounded-md"
-							width="130"
-							height="130"
-							layout="fixed"
-							alt="content"
-							onClick={() => {
-								setFormLoginData({ ...formLoginData, password: '' });
-								setIdLoginForm(idLoginForm === id ? null : id);
-							}}
-						/>
+						{avatar && (
+							<Image
+								src={avatar}
+								className="rounded-md"
+								width="130"
+								height="130"
+								layout="fixed"
+								alt="content"
+								onClick={() => {
+									setFormLoginData({ ...formLoginData, password: '' });
+									setIdLoginForm(idLoginForm === id ? null : id);
+								}}
+							/>
+						)}
 
 						<p className="dark:text-dark-text text-dark-third font-semibold text-center">
 							{username}

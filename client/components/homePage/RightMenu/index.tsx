@@ -4,12 +4,21 @@ import {
 	VideoCameraIcon,
 } from '@heroicons/react/solid';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useListUsersQuery } from '../../../generated/graphql';
 import Avatar from '../../../public/avatar.jpg';
 import Friends from '../../../public/friends.png';
-import GroupImg1 from '../../../public/group-img-1.jpg';
 import RightMenuItem from './RightMenuItem';
 
 export default function RightMenu() {
+	const [listFriends, setListFriends]: any = useState([]);
+	const { data: listUserData } = useListUsersQuery();
+
+	// fetch list friends
+	useEffect(() => {
+		listUserData?.listUsers && setListFriends(listUserData.listUsers);
+	}, [listUserData]);
+
 	return (
 		<div className="fixed dark:text-dark-text right-0 top-20 2md:w-2/7 2lg:w-1/5 bottom-0 hidden 2md:block pl-1.5 pr-1">
 			<div className="flex flex-col h-full">
@@ -83,15 +92,9 @@ export default function RightMenu() {
 						</div>
 					</div>
 
-					<RightMenuItem src={Avatar} avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={Avatar} story avatar content="Vũ Ngọc Duyệt" />
-					<RightMenuItem src={GroupImg1} avatar content="Vũ Ngọc Duyệt" />
+					{listFriends.map(({ id, avatar, username }: any) => (
+						<RightMenuItem key={id} src={avatar} avatar content={username} />
+					))}
 				</div>
 			</div>
 		</div>
